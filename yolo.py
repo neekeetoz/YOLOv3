@@ -17,8 +17,6 @@ from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
 from yolo3.utils import letterbox_image
 from keras.utils import multi_gpu_model
 
-
-
 class YOLO(object):
     _defaults = {
         "model_path": 'model_data/yolo.h5',
