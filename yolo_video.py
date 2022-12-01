@@ -3,6 +3,9 @@ import argparse
 from yolo import YOLO, detect_video
 from PIL import Image
 
+from tensorflow.python.framework.ops import disable_eager_execution
+disable_eager_execution()
+
 def detect_img(yolo):
     while True:
         img = input('Input image filename:')

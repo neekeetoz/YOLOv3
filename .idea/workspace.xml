@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3cef1e3e-f687-4584-bdda-9ec220073204" name="Changes" comment="">
+    <list default="true" id="3cef1e3e-f687-4584-bdda-9ec220073204" name="Changes" comment="Исправлена ошибка с графическим процессором">
       <change beforePath="$PROJECT_DIR$/.idea/keras-yolo3-master.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/keras-yolo3-master.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/convert.py" beforeDir="false" afterPath="$PROJECT_DIR$/convert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_data/coco_classes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/model_data/coco_classes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_data/voc_classes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/model_data/voc_classes.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yolo.py" beforeDir="false" afterPath="$PROJECT_DIR$/yolo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yolo3/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/yolo3/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yolo_video.py" beforeDir="false" afterPath="$PROJECT_DIR$/yolo_video.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,8 +129,8 @@
       <list>
         <item itemvalue="Python.yolo_video" />
         <item itemvalue="Python.yolo" />
-        <item itemvalue="Python.convert" />
         <item itemvalue="Python.model" />
+        <item itemvalue="Python.convert" />
       </list>
     </recent_temporary>
   </component>
@@ -142,6 +143,14 @@
       <option name="presentableId" value="Default" />
       <updated>1669809895012</updated>
     </task>
+    <task id="LOCAL-00001" summary="Исправлена ошибка с графическим процессором">
+      <created>1669890300315</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669890300315</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -154,5 +163,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Исправлена ошибка с графическим процессором" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправлена ошибка с графическим процессором" />
   </component>
 </project>

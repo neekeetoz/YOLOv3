@@ -5,6 +5,7 @@ Class definition of YOLO_v3 style detection model on image and video
 
 import colorsys
 import os
+import cv2
 from timeit import default_timer as timer
 
 import numpy as np
@@ -172,7 +173,6 @@ class YOLO(object):
         self.sess.close()
 
 def detect_video(yolo, video_path, output_path=""):
-    import cv2
     vid = cv2.VideoCapture(video_path)
     if not vid.isOpened():
         raise IOError("Couldn't open webcam or video")
