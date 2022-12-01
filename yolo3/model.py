@@ -5,12 +5,9 @@ from functools import wraps
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
-from keras.layers import Conv2D, Add, ZeroPadding2D, UpSampling2D, Concatenate, MaxPooling2D
-from keras.layers import LeakyReLU
-from keras.layers import BatchNormalization
+from keras.layers import Conv2D, Add, ZeroPadding2D, UpSampling2D, Concatenate, MaxPooling2D, LeakyReLU, BatchNormalization
 from keras.models import Model
 from keras.regularizers import l2
-
 from yolo3.utils import compose
 
 
