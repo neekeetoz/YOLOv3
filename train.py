@@ -33,8 +33,10 @@ def _main():
             freeze_body=2, weights_path='model_data/yolo_weights.h5') # make sure you know what you freeze
 
     logging = TensorBoard(log_dir=log_dir)
-    checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
-        monitor='val_loss', save_weights_only=True, save_best_only=True, save_freq=3)
+    log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/new_model.h5'
+    #log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
+    checkpoint = ModelCheckpoint(log_dir_1,
+        monitor='val_loss', save_weights_only=True, save_best_only=True, save_freq='epoch')
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
