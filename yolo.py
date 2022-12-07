@@ -5,11 +5,10 @@ Class definition of YOLO_v3 style detection model on image and video
 
 import colorsys
 import os
-import cv2
 from timeit import default_timer as timer
 
 import numpy as np
-import keras.backend as K
+from keras import backend as K
 from keras.models import load_model
 from keras.layers import Input
 from PIL import Image, ImageFont, ImageDraw
@@ -17,14 +16,11 @@ from PIL import Image, ImageFont, ImageDraw
 from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
 from yolo3.utils import letterbox_image
 
-import tensorflow as tf
-
-
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/yolo.h5',
+        "model_path": 'trained_weights_final.h5',
         "anchors_path": 'model_data/yolo_anchors.txt',
-        "classes_path": 'model_data/coco_classes.txt',
+        "classes_path": 'model_data/test_classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
@@ -94,9 +90,13 @@ class YOLO(object):
 
         # Generate output tensor targets for filtered bounding boxes.
         self.input_image_shape = K.placeholder(shape=(2, ))
-        session = tf.distribute.MirroredStrategy()
-        with session.scope():
-            self.yolo_model = load_model(model_path, compile=False)
+        if self.gpu_num>=2:
+            #from keras.utils import multi_gpu_model
+            #self.yolo_model = multi_gpu_model(self.yolo_model, gpus=self.gpu_num)
+            import tensorflow as tf
+            session = tf.distribute.MirroredStrategy()
+            with session.scope():
+                model = load_model("model_data/yolo.h5")
         boxes, scores, classes = yolo_eval(self.yolo_model.output, self.anchors,
                 len(self.class_names), self.input_image_shape,
                 score_threshold=self.score, iou_threshold=self.iou)
@@ -173,9 +173,11 @@ class YOLO(object):
         self.sess.close()
 
 def detect_video(yolo, video_path, output_path=""):
-    vid = cv2.VideoCapture(video_path)
+    import cv2
     if video_path == '0':
         vid = cv2.VideoCapture(0)
+    else:
+        vid = cv2.VideoCapture(video_path)
     if not vid.isOpened():
         raise IOError("Couldn't open webcam or video")
     video_FourCC    = int(vid.get(cv2.CAP_PROP_FOURCC))
