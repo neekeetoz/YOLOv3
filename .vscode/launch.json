@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--input", "road.mp4"]
+            "args": ["--input", "input/traffic_sign_to_test.mp4"]
         }
     ]
 }

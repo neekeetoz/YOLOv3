@@ -18,7 +18,7 @@ from yolo3.utils import letterbox_image
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'trained_weights_final.h5',
+        "model_path": 'model_data/trained_55.h5',
         "anchors_path": 'model_data/yolo_anchors.txt',
         "classes_path": 'model_data/test_classes.txt',
         "score" : 0.3,
