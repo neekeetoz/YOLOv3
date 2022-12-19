@@ -22,9 +22,9 @@ import tensorflow as tf
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/yolo.h5',
-        "anchors_path": 'model_data/yolo_anchors.txt',
-        "classes_path": 'model_data/coco_classes.txt',
+        "model_path": '124on43.h5',
+        "anchors_path": 'yolo_anchors.txt',
+        "classes_path": 'classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
@@ -94,9 +94,10 @@ class YOLO(object):
 
         # Generate output tensor targets for filtered bounding boxes.
         self.input_image_shape = K.placeholder(shape=(2, ))
-        session = tf.distribute.MirroredStrategy()
-        with session.scope():
-            self.yolo_model = load_model(model_path, compile=False)
+        if self.gpu_num >= 2:
+            session = tf.distribute.MirroredStrategy()
+            with session.scope():
+                self.yolo_model = load_model(model_path, compile=False)
         boxes, scores, classes = yolo_eval(self.yolo_model.output, self.anchors,
                 len(self.class_names), self.input_image_shape,
                 score_threshold=self.score, iou_threshold=self.iou)
