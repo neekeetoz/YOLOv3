@@ -106,3 +106,14 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# изображения и прочее
+Annotations/
+images/
+images_4c/
+output/
+Знаки/
+Train/
+test/
+sign/
+*.mp4

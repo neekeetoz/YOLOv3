@@ -10,8 +10,8 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true,
-            "args": ["--input", "input/traffic_sign_to_test.mp4"]
+            "args": ["--input", "0"]
+            
         }
     ]
 }

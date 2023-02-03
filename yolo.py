@@ -18,9 +18,9 @@ from yolo3.utils import letterbox_image
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/trained_55.h5',
-        "anchors_path": 'model_data/yolo_anchors.txt',
-        "classes_path": 'model_data/test_classes.txt',
+        "model_path": 'input/deafult_tiny_weigths.h5',
+        "anchors_path": 'model_data/tiny_yolo_anchors.txt',
+        "classes_path": 'model_data/coco_classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
@@ -44,14 +44,14 @@ class YOLO(object):
 
     def _get_class(self):
         classes_path = os.path.expanduser(self.classes_path)
-        with open(classes_path) as f:
+        with open(classes_path, encoding='utf-8') as f:
             class_names = f.readlines()
         class_names = [c.strip() for c in class_names]
         return class_names
 
     def _get_anchors(self):
         anchors_path = os.path.expanduser(self.anchors_path)
-        with open(anchors_path) as f:
+        with open(anchors_path, encoding='utf-8') as f:
             anchors = f.readline()
         anchors = [float(x) for x in anchors.split(',')]
         return np.array(anchors).reshape(-1, 2)
@@ -102,7 +102,7 @@ class YOLO(object):
                 score_threshold=self.score, iou_threshold=self.iou)
         return boxes, scores, classes
 
-    def detect_image(self, image):
+    def detect_image(self, image, centroids):
         start = timer()
 
         if self.model_image_size != (None, None):
@@ -123,6 +123,7 @@ class YOLO(object):
             [self.boxes, self.scores, self.classes],
             feed_dict={
                 self.yolo_model.input: image_data,
+                # size[1] - ширина, size[0] - высота
                 self.input_image_shape: [image.size[1], image.size[0]],
                 K.learning_phase(): 0
             })
@@ -134,6 +135,7 @@ class YOLO(object):
         thickness = (image.size[0] + image.size[1]) // 300
 
         for i, c in reversed(list(enumerate(out_classes))):
+            # распознанный класс
             predicted_class = self.class_names[c]
             box = out_boxes[i]
             score = out_scores[i]
@@ -142,12 +144,21 @@ class YOLO(object):
             draw = ImageDraw.Draw(image)
             label_size = draw.textsize(label, font)
 
+            # координаты
             top, left, bottom, right = box
             top = max(0, np.floor(top + 0.5).astype('int32'))
             left = max(0, np.floor(left + 0.5).astype('int32'))
             bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
             right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
             print(label, (left, top), (right, bottom))
+            
+            #todo: дописать проверку на наличие объектов в кадре
+            # если не существуют, то удалить, иначе изменить центральную координату
+            is_exist = False
+            for centroid in centroids:
+                if centroid.compare(left, top, right, bottom):
+                    predicted_class = centroid.Name
+                    break
 
             if top - label_size[1] >= 0:
                 text_origin = np.array([left, top - label_size[1]])
@@ -156,6 +167,7 @@ class YOLO(object):
 
             # My kingdom for a good redistributable image drawing library.
             for i in range(thickness):
+                # рисуем
                 draw.rectangle(
                     [left + i, top + i, right - i, bottom - i],
                     outline=self.colors[c])
@@ -192,10 +204,13 @@ def detect_video(yolo, video_path, output_path=""):
     curr_fps = 0
     fps = "FPS: ??"
     prev_time = timer()
+    # ОБЪЕКТЫ ДЛЯ СРАВНЕНИЯ
+    centroids = [] 
+    #
     while True:
         return_value, frame = vid.read()
         image = Image.fromarray(frame)
-        image = yolo.detect_image(image)
+        image = yolo.detect_image(image, centroids)
         result = np.asarray(image)
         curr_time = timer()
         exec_time = curr_time - prev_time
@@ -216,3 +231,18 @@ def detect_video(yolo, video_path, output_path=""):
             break
     yolo.close_session()
 
+# МОЙ КЛАСС
+class Centroid:
+    # для всех объектов
+    index = 0
+    def __init__(self, name, x, y):
+        self.Name = name
+        self.X = x
+        self.Y = y
+        
+    def compare(self, x1, y1, x2, y2):
+        if self.X > x1 and self.X < x2:
+            if self.Y > y1 and self.Y < y2:
+                return True
+        return False
+    

@@ -63,7 +63,8 @@ optional arguments:
     ...
     ```
 
-2. Make sure you have run `python convert.py -w yolov3.cfg yolov3.weights model_data/yolo_weights.h5`  
+2. Make sure you have run `python convert.py -w yolov3.cfg yolov3.weights model_data/yolo_weights.h5`
+  python convert.py -w yolov3-tiny.cfg model_data/yolov3-tiny.weights model_data/tiny-yolo_weights.h5
     The file model_data/yolo_weights.h5 is used to load pretrained weights.
 
 3. Modify train.py and start training.  
