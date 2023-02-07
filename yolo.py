@@ -161,8 +161,6 @@ class YOLO(object):
             bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
             right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
             
-            
-            
             # если не существуют, то удалить, иначе изменить центральную координату
             is_exist = False
             for centroid in centroids:
@@ -181,6 +179,7 @@ class YOLO(object):
                         text_origin = np.array([left, top + 1])
                     draw.text(text_origin, label_index, fill=(0, 256, 0), font=font)
                     break
+            # Если центроида для найденного объекта не существует, то создаем новый
             if not is_exist:
                 centroid = Centroid(
                     predicted_class,
@@ -191,16 +190,18 @@ class YOLO(object):
                 centroids.append(centroid)
                 # запись индекса в метку
                 label_index = str(centroid.Index)
+                # Индекс для следующего объекта
                 Centroid.index += 1
-                draw.rectangle([centroid.X, centroid.Y, centroid.X+2, centroid.Y+2], outline=self.colors[c])
                 label_size = draw.textsize(label, font)
                 if top - label_size[1] >= 0:
                     text_origin = np.array([centroid.X, centroid.Y - label_size[1]])
                 else:
                     text_origin = np.array([left, top + 1])
+                # Рисуем точку центроида и номер объекта
+                draw.rectangle([centroid.X, centroid.Y, centroid.X+2, centroid.Y+2], outline=self.colors[c])
                 draw.text(text_origin, label_index, fill=(0, 256, 0), font=font)
 
-            print(label.split(' ')[0], label_index, (left, top), (right, bottom))
+            print(label, label_index, (left, top), (right, bottom))
             label_size = draw.textsize(label, font)
             
             if top - label_size[1] >= 0:
@@ -301,7 +302,7 @@ class Centroid:
         self.Name = name
         self.X = x
         self.Y = y
-        self.Index = Centroid.index + 1
+        self.Index = Centroid.index
         self.Exist = True
         
     # Проверяет является ли центроид этим объектом
