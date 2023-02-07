@@ -6,6 +6,7 @@ Class definition of YOLO_v3 style detection model on image and video
 import colorsys
 import os
 from timeit import default_timer as timer
+import time
 
 import numpy as np
 from keras import backend as K
@@ -18,8 +19,8 @@ from yolo3.utils import letterbox_image
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'input/deafult_tiny_weigths.h5',
-        "anchors_path": 'model_data/tiny_yolo_anchors.txt',
+        "model_path": 'input/deafult_weigths.h5',
+        "anchors_path": 'model_data/yolo_anchors.txt',
         "classes_path": 'model_data/coco_classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
@@ -41,6 +42,10 @@ class YOLO(object):
         self.anchors = self._get_anchors()
         self.sess = K.get_session()
         self.boxes, self.scores, self.classes = self.generate()
+        # последние обнаруженные объекты
+        self.out_boxes = None
+        self.out_scores = None
+        self.out_classes = None
 
     def _get_class(self):
         classes_path = os.path.expanduser(self.classes_path)
@@ -102,7 +107,7 @@ class YOLO(object):
                 score_threshold=self.score, iou_threshold=self.iou)
         return boxes, scores, classes
 
-    def detect_image(self, image, centroids):
+    def detect_image(self, image, centroids, is_enable):
         start = timer()
 
         if self.model_image_size != (None, None):
@@ -119,30 +124,35 @@ class YOLO(object):
         image_data /= 255.
         image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
 
-        out_boxes, out_scores, out_classes = self.sess.run(
-            [self.boxes, self.scores, self.classes],
-            feed_dict={
-                self.yolo_model.input: image_data,
-                # size[1] - ширина, size[0] - высота
-                self.input_image_shape: [image.size[1], image.size[0]],
-                K.learning_phase(): 0
-            })
+        if is_enable:
+            self.out_boxes, self.out_scores, self.out_classes = self.sess.run(
+                [self.boxes, self.scores, self.classes],
+                feed_dict={
+                    self.yolo_model.input: image_data,
+                    # size[1] - ширина, size[0] - высота
+                    self.input_image_shape: [image.size[1], image.size[0]],
+                    K.learning_phase(): 0
+                })
+        
 
-        print('Found {} boxes for {}'.format(len(out_boxes), 'img'))
+        print('Found {} boxes for {}'.format(len(self.out_boxes), 'img'))
 
         font = ImageFont.truetype(font='font/FiraMono-Medium.otf',
                     size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
         thickness = (image.size[0] + image.size[1]) // 300
 
-        for i, c in reversed(list(enumerate(out_classes))):
+        # сбрасываем параметр на случай, если центроид больше не сущуствует
+        for centroid in centroids:
+            centroid.Exist = False
+        
+        for i, c in reversed(list(enumerate(self.out_classes))):
             # распознанный класс
             predicted_class = self.class_names[c]
-            box = out_boxes[i]
-            score = out_scores[i]
-
+            box = self.out_boxes[i]
+            score = self.out_scores[i]
             label = '{} {:.2f}'.format(predicted_class, score)
+            
             draw = ImageDraw.Draw(image)
-            label_size = draw.textsize(label, font)
 
             # координаты
             top, left, bottom, right = box
@@ -150,16 +160,49 @@ class YOLO(object):
             left = max(0, np.floor(left + 0.5).astype('int32'))
             bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
             right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
-            print(label, (left, top), (right, bottom))
             
-            #todo: дописать проверку на наличие объектов в кадре
+            
+            
             # если не существуют, то удалить, иначе изменить центральную координату
             is_exist = False
             for centroid in centroids:
-                if centroid.compare(left, top, right, bottom):
-                    predicted_class = centroid.Name
+                if centroid.compare(predicted_class, left, top, right, bottom):
+                    centroid.X = (right - left) / 2 + left
+                    centroid.Y = (bottom - top) / 2 + top
+                    centroid.Exist = True
+                    is_exist = True
+                    # запись индекса в метку
+                    label_index = str(centroid.Index)
+                    draw.rectangle([centroid.X, centroid.Y, centroid.X+2, centroid.Y+2], outline=self.colors[c])
+                    label_size = draw.textsize(label, font)
+                    if top - label_size[1] >= 0:
+                        text_origin = np.array([centroid.X, centroid.Y - label_size[1]])
+                    else:
+                        text_origin = np.array([left, top + 1])
+                    draw.text(text_origin, label_index, fill=(0, 256, 0), font=font)
                     break
+            if not is_exist:
+                centroid = Centroid(
+                    predicted_class,
+                    (right - left) / 2 + left,
+                    (bottom - top) / 2 + top
+                )
+                centroid.Exist = True
+                centroids.append(centroid)
+                # запись индекса в метку
+                label_index = str(centroid.Index)
+                Centroid.index += 1
+                draw.rectangle([centroid.X, centroid.Y, centroid.X+2, centroid.Y+2], outline=self.colors[c])
+                label_size = draw.textsize(label, font)
+                if top - label_size[1] >= 0:
+                    text_origin = np.array([centroid.X, centroid.Y - label_size[1]])
+                else:
+                    text_origin = np.array([left, top + 1])
+                draw.text(text_origin, label_index, fill=(0, 256, 0), font=font)
 
+            print(label.split(' ')[0], label_index, (left, top), (right, bottom))
+            label_size = draw.textsize(label, font)
+            
             if top - label_size[1] >= 0:
                 text_origin = np.array([left, top - label_size[1]])
             else:
@@ -175,8 +218,17 @@ class YOLO(object):
                 [tuple(text_origin), tuple(text_origin + label_size)],
                 fill=self.colors[c])
             draw.text(text_origin, label, fill=(0, 0, 0), font=font)
-            del draw
-
+            # del draw
+            
+        # удаляем неактуальные центроиды
+        i = 0
+        while True:
+            if i >= len(centroids):
+                break
+            if not centroids[i].Exist:
+                centroids.pop(i)
+            i += 1
+                
         end = timer()
         print(end - start)
         return image
@@ -205,12 +257,22 @@ def detect_video(yolo, video_path, output_path=""):
     fps = "FPS: ??"
     prev_time = timer()
     # ОБЪЕКТЫ ДЛЯ СРАВНЕНИЯ
-    centroids = [] 
-    #
+    centroids = []
+    # Номер кадра для проверки
+    num_frame = 0
     while True:
         return_value, frame = vid.read()
+        if not return_value:
+            print('End of file')
+            break
         image = Image.fromarray(frame)
-        image = yolo.detect_image(image, centroids)
+        if num_frame <= 0:
+            num_frame = 5
+            # поиск объектов в кадре
+            image = yolo.detect_image(image, centroids, True)
+        else:
+            num_frame -= 1
+            image = yolo.detect_image(image, centroids, False)
         result = np.asarray(image)
         curr_time = timer()
         exec_time = curr_time - prev_time
@@ -239,10 +301,14 @@ class Centroid:
         self.Name = name
         self.X = x
         self.Y = y
+        self.Index = Centroid.index + 1
+        self.Exist = True
         
-    def compare(self, x1, y1, x2, y2):
-        if self.X > x1 and self.X < x2:
-            if self.Y > y1 and self.Y < y2:
-                return True
+    # Проверяет является ли центроид этим объектом
+    def compare(self, name, x1, y1, x2, y2):
+        if self.Name == name:
+            if self.X > x1 and self.X < x2:
+                if self.Y > y1 and self.Y < y2:
+                    return True
         return False
     
