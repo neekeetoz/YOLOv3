@@ -238,8 +238,10 @@ class YOLO(object):
     def close_session(self):
         self.sess.close()
 
+import cv2
+
 def detect_video(yolo, video_path, output_path=""):
-    import cv2
+    
     if video_path == '0':
         vid = cv2.VideoCapture(0)
     else:
@@ -281,7 +283,6 @@ def detect_video(yolo, video_path, output_path=""):
             num_frame -= 1
             image = yolo.detect_image(image, centroids, False)
         if in_real_time:
-            result = np.asarray(image)
             curr_time = timer()
             exec_time = curr_time - prev_time
             prev_time = curr_time
@@ -291,21 +292,17 @@ def detect_video(yolo, video_path, output_path=""):
                 accum_time = accum_time - 1
                 fps = "FPS: " + str(curr_fps)
                 curr_fps = 0
-            cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=0.50, color=(255, 0, 0), thickness=2)
-            cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-            cv2.imshow("result", result)
-            if isOutput:
-                out.write(result)
+            if show_frame(image, fps, isOutput):
+                break
         else:
-            result.append(np.asarray(image))
+            result.append(image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     if not in_real_time:
         prev_time = timer()
-        count_frames = 60
+        count_frames = 40
         delay = 1 / count_frames
-        for fr in result:
+        for image in result:
             curr_time = timer()
             exec_time = curr_time - prev_time
             prev_time = curr_time
@@ -315,18 +312,21 @@ def detect_video(yolo, video_path, output_path=""):
                 accum_time = accum_time - 1
                 fps = "FPS: " + str(curr_fps)
                 curr_fps = 0
-            cv2.putText(fr, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=0.50, color=(255, 0, 0), thickness=2)
-            
-            cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-            cv2.imshow("result", fr)
-            if isOutput:
-                out.write(fr)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if show_frame(image, fps, isOutput):
                 break
             time.sleep(delay)
     yolo.close_session()
     
+def show_frame(image, fps, isOutput):
+    frame = np.asarray(image)
+    cv2.putText(frame, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=0.50, color=(255, 0, 0), thickness=2)
+    cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+    cv2.imshow("result", frame)
+    # сохранение записи
+    # if isOutput:
+    #     out.write(frame)
+    return cv2.waitKey(1) & 0xFF == ord('q')
     
 def coordinates(image):
     result = [0] * 2 
