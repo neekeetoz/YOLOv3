@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: текущий файл",
+            "name": "Python: yolo_video.py",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "yolo_video.py",
             "console": "integratedTerminal",
-            "args": ["--input", "input/road.mp4"]
+            "args": ["--input", "input/road_signs_test.mp4"]
         }
     ]
 }

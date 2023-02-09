@@ -3,6 +3,7 @@
 Class definition of YOLO_v3 style detection model on image and video
 """
 
+import pandas as pd
 import colorsys
 import os
 from timeit import default_timer as timer
@@ -12,7 +13,7 @@ import numpy as np
 from keras import backend as K
 from keras.models import load_model
 from keras.layers import Input
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageFont, ImageDraw, ExifTags
 
 from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
 from yolo3.utils import letterbox_image
@@ -261,12 +262,17 @@ def detect_video(yolo, video_path, output_path=""):
     centroids = []
     # Номер кадра для проверки
     num_frame = 0
+    # обработать видео в реальном времени или перед показом
+    in_real_time = False
+    if not in_real_time:
+        result = []
     while True:
         return_value, frame = vid.read()
         if not return_value:
             print('End of file')
             break
         image = Image.fromarray(frame)
+        # coordinates(image)
         if num_frame <= 0:
             num_frame = 5
             # поиск объектов в кадре
@@ -274,25 +280,66 @@ def detect_video(yolo, video_path, output_path=""):
         else:
             num_frame -= 1
             image = yolo.detect_image(image, centroids, False)
-        result = np.asarray(image)
-        curr_time = timer()
-        exec_time = curr_time - prev_time
-        prev_time = curr_time
-        accum_time = accum_time + exec_time
-        curr_fps = curr_fps + 1
-        if accum_time > 1:
-            accum_time = accum_time - 1
-            fps = "FPS: " + str(curr_fps)
-            curr_fps = 0
-        cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=0.50, color=(255, 0, 0), thickness=2)
-        cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-        cv2.imshow("result", result)
-        if isOutput:
-            out.write(result)
+        if in_real_time:
+            result = np.asarray(image)
+            curr_time = timer()
+            exec_time = curr_time - prev_time
+            prev_time = curr_time
+            accum_time = accum_time + exec_time
+            curr_fps = curr_fps + 1
+            if accum_time > 1:
+                accum_time = accum_time - 1
+                fps = "FPS: " + str(curr_fps)
+                curr_fps = 0
+            cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=0.50, color=(255, 0, 0), thickness=2)
+            cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+            cv2.imshow("result", result)
+            if isOutput:
+                out.write(result)
+        else:
+            result.append(np.asarray(image))
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    if not in_real_time:
+        prev_time = timer()
+        count_frames = 60
+        delay = 1 / count_frames
+        for fr in result:
+            curr_time = timer()
+            exec_time = curr_time - prev_time
+            prev_time = curr_time
+            accum_time = accum_time + exec_time
+            curr_fps = curr_fps + 1
+            if accum_time > 1:
+                accum_time = accum_time - 1
+                fps = "FPS: " + str(curr_fps)
+                curr_fps = 0
+            cv2.putText(fr, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=0.50, color=(255, 0, 0), thickness=2)
+            
+            cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+            cv2.imshow("result", fr)
+            if isOutput:
+                out.write(fr)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            time.sleep(delay)
     yolo.close_session()
+    
+    
+def coordinates(image):
+    result = [0] * 2 
+    j=0
+    exif = { ExifTags.TAGS[k]: v for k, v in image._getexif().items() if k in ExifTags.TAGS }
+    gps = exif['GPSInfo']
+        
+    result[j] = gps[2][0] + gps[2][1]/60 + float(gps[2][2])/3600
+    result[j+1] = gps[4][0] + gps[4][1]/60 + float(gps[4][2])/3600
+
+    # coord[j] = str(int(gps[2][0])) + '°' + str(int(gps[2][1])) + '`' + str(int(gps[2][2]))
+    # coord[j+1] = str(int(gps[4][0])) + '°' + str(int(gps[4][1])) + '`' + str(int(gps[4][2]))
+    j += 2
 
 # МОЙ КЛАСС
 class Centroid:
