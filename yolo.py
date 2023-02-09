@@ -1,15 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Class definition of YOLO_v3 style detection model on image and video
-"""
-
 import colorsys
 import os
-import cv2
 from timeit import default_timer as timer
+import time
 
 import numpy as np
-import keras.backend as K
+from keras import backend as K
 from keras.models import load_model
 from keras.layers import Input
 from PIL import Image, ImageFont, ImageDraw
@@ -17,18 +12,16 @@ from PIL import Image, ImageFont, ImageDraw
 from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
 from yolo3.utils import letterbox_image
 
-import tensorflow as tf
-
 
 class YOLO(object):
     _defaults = {
-        "model_path": '124on43.h5',
+        "model_path": 'model_data/yolo.h5',
         "anchors_path": 'yolo_anchors.txt',
-        "classes_path": 'classes.txt',
-        "score" : 0.3,
-        "iou" : 0.45,
-        "model_image_size" : (416, 416),
-        "gpu_num" : 1,
+        "classes_path": 'model_data/coco_classes.txt',
+        "score": 0.3,
+        "iou": 0.45,
+        "model_image_size": (416, 416),
+        "gpu_num": 1,
     }
 
     @classmethod
@@ -39,23 +32,27 @@ class YOLO(object):
             return "Unrecognized attribute name '" + n + "'"
 
     def __init__(self, **kwargs):
-        self.__dict__.update(self._defaults) # set up default values
-        self.__dict__.update(kwargs) # and update with user overrides
+        self.__dict__.update(self._defaults)  # set up default values
+        self.__dict__.update(kwargs)  # and update with user overrides
         self.class_names = self._get_class()
         self.anchors = self._get_anchors()
         self.sess = K.get_session()
         self.boxes, self.scores, self.classes = self.generate()
+        # последние обнаруженные объекты
+        self.out_boxes = None
+        self.out_scores = None
+        self.out_classes = None
 
     def _get_class(self):
         classes_path = os.path.expanduser(self.classes_path)
-        with open(classes_path) as f:
+        with open(classes_path, encoding='utf-8') as f:
             class_names = f.readlines()
         class_names = [c.strip() for c in class_names]
         return class_names
 
     def _get_anchors(self):
         anchors_path = os.path.expanduser(self.anchors_path)
-        with open(anchors_path) as f:
+        with open(anchors_path, encoding='utf-8') as f:
             anchors = f.readline()
         anchors = [float(x) for x in anchors.split(',')]
         return np.array(anchors).reshape(-1, 2)
@@ -67,16 +64,16 @@ class YOLO(object):
         # Load model, or construct model and load weights.
         num_anchors = len(self.anchors)
         num_classes = len(self.class_names)
-        is_tiny_version = num_anchors==6 # default setting
+        is_tiny_version = num_anchors == 6  # default setting
         try:
             self.yolo_model = load_model(model_path, compile=False)
         except:
-            self.yolo_model = tiny_yolo_body(Input(shape=(None,None,3)), num_anchors//2, num_classes) \
-                if is_tiny_version else yolo_body(Input(shape=(None,None,3)), num_anchors//3, num_classes)
-            self.yolo_model.load_weights(self.model_path) # make sure model, anchors and classes match
+            self.yolo_model = tiny_yolo_body(Input(shape=(None, None, 3)), num_anchors // 2, num_classes) \
+                if is_tiny_version else yolo_body(Input(shape=(None, None, 3)), num_anchors // 3, num_classes)
+            self.yolo_model.load_weights(self.model_path)  # make sure model, anchors and classes match
         else:
             assert self.yolo_model.layers[-1].output_shape[-1] == \
-                num_anchors/len(self.yolo_model.output) * (num_classes + 5), \
+                   num_anchors / len(self.yolo_model.output) * (num_classes + 5), \
                 'Mismatch between model and given anchor and class sizes'
 
         print('{} model, anchors, and classes loaded.'.format(model_path))
@@ -93,22 +90,25 @@ class YOLO(object):
         np.random.seed(None)  # Reset seed to default.
 
         # Generate output tensor targets for filtered bounding boxes.
-        self.input_image_shape = K.placeholder(shape=(2, ))
+        self.input_image_shape = K.placeholder(shape=(2,))
         if self.gpu_num >= 2:
+            # from keras.utils import multi_gpu_model
+            # self.yolo_model = multi_gpu_model(self.yolo_model, gpus=self.gpu_num)
+            import tensorflow as tf
             session = tf.distribute.MirroredStrategy()
             with session.scope():
-                self.yolo_model = load_model(model_path, compile=False)
+                model = load_model("model_data/yolo.h5")
         boxes, scores, classes = yolo_eval(self.yolo_model.output, self.anchors,
-                len(self.class_names), self.input_image_shape,
-                score_threshold=self.score, iou_threshold=self.iou)
+                                           len(self.class_names), self.input_image_shape,
+                                           score_threshold=self.score, iou_threshold=self.iou)
         return boxes, scores, classes
 
-    def detect_image(self, image):
+    def detect_image(self, image, centroids, is_enable):
         start = timer()
 
         if self.model_image_size != (None, None):
-            assert self.model_image_size[0]%32 == 0, 'Multiples of 32 required'
-            assert self.model_image_size[1]%32 == 0, 'Multiples of 32 required'
+            assert self.model_image_size[0] % 32 == 0, 'Multiples of 32 required'
+            assert self.model_image_size[1] % 32 == 0, 'Multiples of 32 required'
             boxed_image = letterbox_image(image, tuple(reversed(self.model_image_size)))
         else:
             new_image_size = (image.width - (image.width % 32),
@@ -120,35 +120,84 @@ class YOLO(object):
         image_data /= 255.
         image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
 
-        out_boxes, out_scores, out_classes = self.sess.run(
-            [self.boxes, self.scores, self.classes],
-            feed_dict={
-                self.yolo_model.input: image_data,
-                self.input_image_shape: [image.size[1], image.size[0]],
-                K.learning_phase(): 0
-            })
+        if is_enable:
+            self.out_boxes, self.out_scores, self.out_classes = self.sess.run(
+                [self.boxes, self.scores, self.classes],
+                feed_dict={
+                    self.yolo_model.input: image_data,
+                    # size[1] - ширина, size[0] - высота
+                    self.input_image_shape: [image.size[1], image.size[0]],
+                    K.learning_phase(): 0
+                })
 
-        print('Found {} boxes for {}'.format(len(out_boxes), 'img'))
+        print('Found {} boxes for {}'.format(len(self.out_boxes), 'img'))
 
         font = ImageFont.truetype(font='font/FiraMono-Medium.otf',
-                    size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
+                                  size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
         thickness = (image.size[0] + image.size[1]) // 300
 
-        for i, c in reversed(list(enumerate(out_classes))):
+        # сбрасываем параметр на случай, если центроид больше не сущуствует
+        for centroid in centroids:
+            centroid.Exist = False
+
+        for i, c in reversed(list(enumerate(self.out_classes))):
+            # распознанный класс
             predicted_class = self.class_names[c]
-            box = out_boxes[i]
-            score = out_scores[i]
-
+            box = self.out_boxes[i]
+            score = self.out_scores[i]
             label = '{} {:.2f}'.format(predicted_class, score)
-            draw = ImageDraw.Draw(image)
-            label_size = draw.textsize(label, font)
 
+            draw = ImageDraw.Draw(image)
+
+            # координаты
             top, left, bottom, right = box
             top = max(0, np.floor(top + 0.5).astype('int32'))
             left = max(0, np.floor(left + 0.5).astype('int32'))
             bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
             right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
-            print(label, (left, top), (right, bottom))
+
+            # если не существуют, то удалить, иначе изменить центральную координату
+            is_exist = False
+            for centroid in centroids:
+                if centroid.compare(predicted_class, left, top, right, bottom):
+                    centroid.X = (right - left) / 2 + left
+                    centroid.Y = (bottom - top) / 2 + top
+                    centroid.Exist = True
+                    is_exist = True
+                    # запись индекса в метку
+                    label_index = str(centroid.Index)
+                    draw.rectangle([centroid.X, centroid.Y, centroid.X + 2, centroid.Y + 2], outline=self.colors[c])
+                    label_size = draw.textsize(label, font)
+                    if top - label_size[1] >= 0:
+                        text_origin = np.array([centroid.X, centroid.Y - label_size[1]])
+                    else:
+                        text_origin = np.array([left, top + 1])
+                    draw.text(text_origin, label_index, fill=(0, 256, 0), font=font)
+                    break
+            # Если центроида для найденного объекта не существует, то создаем новый
+            if not is_exist:
+                centroid = Centroid(
+                    predicted_class,
+                    (right - left) / 2 + left,
+                    (bottom - top) / 2 + top
+                )
+                centroid.Exist = True
+                centroids.append(centroid)
+                # запись индекса в метку
+                label_index = str(centroid.Index)
+                # Индекс для следующего объекта
+                Centroid.index += 1
+                label_size = draw.textsize(label, font)
+                if top - label_size[1] >= 0:
+                    text_origin = np.array([centroid.X, centroid.Y - label_size[1]])
+                else:
+                    text_origin = np.array([left, top + 1])
+                # Рисуем точку центроида и номер объекта
+                draw.rectangle([centroid.X, centroid.Y, centroid.X + 2, centroid.Y + 2], outline=self.colors[c])
+                draw.text(text_origin, label_index, fill=(0, 256, 0), font=font)
+
+            print(label, label_index, (left, top), (right, bottom))
+            label_size = draw.textsize(label, font)
 
             if top - label_size[1] >= 0:
                 text_origin = np.array([left, top - label_size[1]])
@@ -157,6 +206,7 @@ class YOLO(object):
 
             # My kingdom for a good redistributable image drawing library.
             for i in range(thickness):
+                # рисуем
                 draw.rectangle(
                     [left + i, top + i, right - i, bottom - i],
                     outline=self.colors[c])
@@ -164,7 +214,16 @@ class YOLO(object):
                 [tuple(text_origin), tuple(text_origin + label_size)],
                 fill=self.colors[c])
             draw.text(text_origin, label, fill=(0, 0, 0), font=font)
-            del draw
+            # del draw
+
+        # удаляем неактуальные центроиды
+        i = 0
+        while True:
+            if i >= len(centroids):
+                break
+            if not centroids[i].Exist:
+                centroids.pop(i)
+            i += 1
 
         end = timer()
         print(end - start)
@@ -173,16 +232,19 @@ class YOLO(object):
     def close_session(self):
         self.sess.close()
 
+
 def detect_video(yolo, video_path, output_path=""):
-    vid = cv2.VideoCapture(video_path)
+    import cv2
     if video_path == '0':
         vid = cv2.VideoCapture(0)
+    else:
+        vid = cv2.VideoCapture(video_path)
     if not vid.isOpened():
         raise IOError("Couldn't open webcam or video")
-    video_FourCC    = int(vid.get(cv2.CAP_PROP_FOURCC))
-    video_fps       = vid.get(cv2.CAP_PROP_FPS)
-    video_size      = (int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)),
-                        int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+    video_FourCC = int(vid.get(cv2.CAP_PROP_FOURCC))
+    video_fps = vid.get(cv2.CAP_PROP_FPS)
+    video_size = (int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)),
+                  int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT)))
     isOutput = True if output_path != "" else False
     if isOutput:
         print("!!! TYPE:", type(output_path), type(video_FourCC), type(video_fps), type(video_size))
@@ -191,10 +253,23 @@ def detect_video(yolo, video_path, output_path=""):
     curr_fps = 0
     fps = "FPS: ??"
     prev_time = timer()
+    # ОБЪЕКТЫ ДЛЯ СРАВНЕНИЯ
+    centroids = []
+    # Номер кадра для проверки
+    num_frame = 0
     while True:
         return_value, frame = vid.read()
+        if not return_value:
+            print('End of file')
+            break
         image = Image.fromarray(frame)
-        image = yolo.detect_image(image)
+        if num_frame <= 0:
+            num_frame = 5
+            # поиск объектов в кадре
+            image = yolo.detect_image(image, centroids, True)
+        else:
+            num_frame -= 1
+            image = yolo.detect_image(image, centroids, False)
         result = np.asarray(image)
         curr_time = timer()
         exec_time = curr_time - prev_time
@@ -215,3 +290,23 @@ def detect_video(yolo, video_path, output_path=""):
             break
     yolo.close_session()
 
+
+# МОЙ КЛАСС
+class Centroid:
+    # для всех объектов
+    index = 0
+
+    def __init__(self, name, x, y):
+        self.Name = name
+        self.X = x
+        self.Y = y
+        self.Index = Centroid.index
+        self.Exist = True
+
+    # Проверяет является ли центроид этим объектом
+    def compare(self, name, x1, y1, x2, y2):
+        if self.Name == name:
+            if self.X > x1 and self.X < x2:
+                if self.Y > y1 and self.Y < y2:
+                    return True
+        return False
