@@ -329,17 +329,7 @@ def show_frame(image, fps, isOutput):
     return cv2.waitKey(1) & 0xFF == ord('q')
     
 def coordinates(image):
-    result = [0] * 2 
-    j=0
-    exif = { ExifTags.TAGS[k]: v for k, v in image._getexif().items() if k in ExifTags.TAGS }
-    gps = exif['GPSInfo']
-        
-    result[j] = gps[2][0] + gps[2][1]/60 + float(gps[2][2])/3600
-    result[j+1] = gps[4][0] + gps[4][1]/60 + float(gps[4][2])/3600
-
-    # coord[j] = str(int(gps[2][0])) + '°' + str(int(gps[2][1])) + '`' + str(int(gps[2][2]))
-    # coord[j+1] = str(int(gps[4][0])) + '°' + str(int(gps[4][1])) + '`' + str(int(gps[4][2]))
-    j += 2
+    pass
 
 # МОЙ КЛАСС
 class Centroid:

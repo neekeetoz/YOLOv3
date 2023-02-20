@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "yolo_video.py",
             "console": "integratedTerminal",
-            "args": ["--input", "input/road.mp4"]
+            "args": ["--input", "input/road_signs_test.mp4"]
         }
     ]
 }
