@@ -291,7 +291,7 @@ def detect_video(yolo, video_path, output_path=""):
             curr_fps = 0
         # cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
         #             fontScale=0.50, color=(255, 0, 0), thickness=2)
-        #todo: govnokod
+
         time_frame = int(vid.get(cv2.CAP_PROP_POS_MSEC)/1000)
         if datetime.datetime.strptime(gps[num_gps].time, '%H:%M:%S') < (time_start + datetime.timedelta(seconds=time_frame)):
             num_gps += 1
