@@ -3,7 +3,9 @@ import os
 from timeit import default_timer as timer
 import time
 
+
 import numpy as np
+import tensorflow as tf
 from keras import backend as K
 from keras.models import load_model
 from keras.layers import Input
@@ -94,7 +96,6 @@ class YOLO(object):
         if self.gpu_num >= 2:
             # from keras.utils import multi_gpu_model
             # self.yolo_model = multi_gpu_model(self.yolo_model, gpus=self.gpu_num)
-            import tensorflow as tf
             session = tf.distribute.MirroredStrategy()
             with session.scope():
                 model = load_model("model_data/yolo.h5")
@@ -232,9 +233,16 @@ class YOLO(object):
     def close_session(self):
         self.sess.close()
 
-
+import datetime
 def detect_video(yolo, video_path, output_path=""):
     import cv2
+    from parser_gps import GPS
+    import parser_gps
+
+    gps: GPS = []
+    gps = parser_gps.get_gps_data_from_file(video_path)
+    time_start = datetime.datetime.strptime(gps[0].time, '%H:%M:%S')
+
     if video_path == '0':
         vid = cv2.VideoCapture(0)
     else:
@@ -257,6 +265,7 @@ def detect_video(yolo, video_path, output_path=""):
     centroids = []
     # Номер кадра для проверки
     num_frame = 0
+    num_gps = 0
     while True:
         return_value, frame = vid.read()
         if not return_value:
@@ -280,8 +289,24 @@ def detect_video(yolo, video_path, output_path=""):
             accum_time = accum_time - 1
             fps = "FPS: " + str(curr_fps)
             curr_fps = 0
-        cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=0.50, color=(255, 0, 0), thickness=2)
+        # cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        #             fontScale=0.50, color=(255, 0, 0), thickness=2)
+        #todo: govnokod
+        time_frame = int(vid.get(cv2.CAP_PROP_POS_MSEC)/1000)
+        if datetime.datetime.strptime(gps[num_gps].time, '%H:%M:%S') < (time_start + datetime.timedelta(seconds=time_frame)):
+            num_gps += 1
+
+
+        cv2.putText(result, text='latitude: ' + str(gps[num_gps].latitude), org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                     fontScale=1, color=(255, 0, 0), thickness=2)
+        cv2.putText(result, text='longitude: ' + str(gps[num_gps].longitude), org=(50, 100), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=1, color=(255, 0, 0), thickness=2)
+        cv2.putText(result, text='speed: ' + str(gps[num_gps].speed + ' km/h'), org=(50, 150), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=1, color=(255, 0, 0), thickness=2)
+        cv2.putText(result, text='date: ' + str(gps[num_gps].date), org=(50, 200), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=1, color=(255, 0, 0), thickness=2)
+        cv2.putText(result, text='time: ' + str(gps[num_gps].time), org=(50, 250), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=1, color=(255, 0, 0), thickness=2)
         cv2.namedWindow("result", cv2.WINDOW_NORMAL)
         cv2.imshow("result", result)
         if isOutput:
