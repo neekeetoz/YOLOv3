@@ -1,11 +1,10 @@
 import numpy as np
 
-
 class YOLO_Kmeans:
 
     def __init__(self, cluster_number, filename):
         self.cluster_number = cluster_number
-        self.filename = "train.txt"
+        self.filename = "21_classes/train_21c.txt"
 
     def iou(self, boxes, clusters):  # 1 box -> k clusters
         n = boxes.shape[0]
@@ -73,6 +72,8 @@ class YOLO_Kmeans:
         dataSet = []
         for line in f:
             infos = line.split(" ")
+            if len(infos) <= 1:
+                continue
             length = len(infos)
             for i in range(1, length):
                 width = int(infos[i].split(",")[2]) - \
@@ -96,6 +97,6 @@ class YOLO_Kmeans:
 
 if __name__ == "__main__":
     cluster_number = 9
-    filename = "train.txt"
+    filename = "21_classes/train_21c.txt"
     kmeans = YOLO_Kmeans(cluster_number, filename)
     kmeans.txt2clusters()

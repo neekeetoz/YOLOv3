@@ -3,7 +3,10 @@ import os
 from timeit import default_timer as timer
 import time
 
-
+import datetime
+import cv2
+from parser_gps import GPS
+import parser_gps
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
@@ -17,9 +20,9 @@ from yolo3.utils import letterbox_image
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/yolo.h5',
+        "model_path": 'trained_weights_final.h5',
         "anchors_path": 'yolo_anchors.txt',
-        "classes_path": 'model_data/coco_classes.txt',
+        "classes_path": '21_classes/classes21.txt',
         "score": 0.3,
         "iou": 0.45,
         "model_image_size": (416, 416),
@@ -233,15 +236,15 @@ class YOLO(object):
     def close_session(self):
         self.sess.close()
 
-import datetime
+
 def detect_video(yolo, video_path, output_path=""):
-    import cv2
-    from parser_gps import GPS
-    import parser_gps
 
     gps: GPS = []
     gps = parser_gps.get_gps_data_from_file(video_path)
-    time_start = datetime.datetime.strptime(gps[0].time, '%H:%M:%S')
+    try:
+        time_start = datetime.datetime.strptime(gps[0].time, '%H:%M:%S')
+    except:
+        pass
 
     if video_path == '0':
         vid = cv2.VideoCapture(0)
@@ -289,24 +292,45 @@ def detect_video(yolo, video_path, output_path=""):
             accum_time = accum_time - 1
             fps = "FPS: " + str(curr_fps)
             curr_fps = 0
-        # cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-        #             fontScale=0.50, color=(255, 0, 0), thickness=2)
+        cv2.putText(result, text=fps, org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=1, color=(158, 170, 6), thickness=3)
 
         time_frame = int(vid.get(cv2.CAP_PROP_POS_MSEC)/1000)
-        if datetime.datetime.strptime(gps[num_gps].time, '%H:%M:%S') < (time_start + datetime.timedelta(seconds=time_frame)):
-            num_gps += 1
+        try:
+            if datetime.datetime.strptime(gps[num_gps].time, '%H:%M:%S') < (time_start + datetime.timedelta(seconds=time_frame)):
+                num_gps += 1
+        except:
+            pass
+
+        if gps[num_gps].date != None:
+            cv2.putText(result, text='date: ' + str(gps[num_gps].date), org=(50, 250),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=1, color=(158, 170, 6), thickness=3)
+        if gps[num_gps].time != None:
+            cv2.putText(result, text='time: ' + str(gps[num_gps].time), org=(50, 300),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=1, color=(158, 170, 6), thickness=3)
+        if gps[num_gps].latitude != None:
+            cv2.putText(result, text='latitude: ' + str(gps[num_gps].latitude), org=(50, 100),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=1, color=(158, 170, 6), thickness=3)
+        if gps[num_gps].longitude != None:
+            cv2.putText(result, text='longitude: ' + str(gps[num_gps].longitude), org=(50, 150),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=1, color=(158, 170, 6), thickness=3)
+        if gps[num_gps].speed != None:
+            cv2.putText(result, text=f'speed: {str(gps[num_gps].speed)} km/h', org=(50, 200),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=1, color=(158, 170, 6), thickness=3)
 
 
-        cv2.putText(result, text='latitude: ' + str(gps[num_gps].latitude), org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                     fontScale=1, color=(255, 0, 0), thickness=2)
-        cv2.putText(result, text='longitude: ' + str(gps[num_gps].longitude), org=(50, 100), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=1, color=(255, 0, 0), thickness=2)
-        cv2.putText(result, text='speed: ' + str(gps[num_gps].speed + ' km/h'), org=(50, 150), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=1, color=(255, 0, 0), thickness=2)
-        cv2.putText(result, text='date: ' + str(gps[num_gps].date), org=(50, 200), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=1, color=(255, 0, 0), thickness=2)
-        cv2.putText(result, text='time: ' + str(gps[num_gps].time), org=(50, 250), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=1, color=(255, 0, 0), thickness=2)
+
+
+
+
+
+
+
         cv2.namedWindow("result", cv2.WINDOW_NORMAL)
         cv2.imshow("result", result)
         if isOutput:
@@ -314,7 +338,6 @@ def detect_video(yolo, video_path, output_path=""):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     yolo.close_session()
-
 
 # МОЙ КЛАСС
 class Centroid:

@@ -14,9 +14,9 @@ from yolo3.utils import get_random_data
 
 
 def _main():
-    annotation_path = 'train.txt'
+    annotation_path = '21_classes/train_21c.txt'
     log_dir = 'C:/Users/n.klepikov/PycharmProjects/yolo3/'
-    classes_path = 'classes.txt'
+    classes_path = '21_classes/classes_21.txt'
     anchors_path = 'yolo_anchors.txt'
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
@@ -30,11 +30,11 @@ def _main():
             freeze_body=2, weights_path='model_data/tiny_yolo_weights.h5')
     else:
         model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/yolo_weights.h5') # make sure you know what you freeze
+            freeze_body=2, weights_path='model_data/yolo.h5') # make sure you know what you freeze
 
     logging = TensorBoard(log_dir=log_dir)
-    log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/new_model.h5'
-    #log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
+    #log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/new_model.h5'
+    log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
     checkpoint = ModelCheckpoint(log_dir_1,
         monitor='val_loss', save_weights_only=True, save_best_only=True, save_freq='epoch')
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
@@ -105,7 +105,7 @@ def get_anchors(anchors_path):
 
 
 def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze_body=2,
-            weights_path='model_data/yolo_weights.h5'):
+            weights_path='model_data/yolo.h5'):
     '''create the training model'''
     K.clear_session() # get a new session
     image_input = Input(shape=(None, None, 3))
