@@ -20,9 +20,9 @@ from yolo3.utils import letterbox_image
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'trained_weights_final.h5',
+        "model_path": 'model_data/yolo_weights.h5',
         "anchors_path": 'yolo_anchors.txt',
-        "classes_path": '21_classes/classes21.txt',
+        "classes_path": 'model_data/coco_classes.txt',
         "score": 0.3,
         "iou": 0.45,
         "model_image_size": (416, 416),
@@ -183,7 +183,8 @@ class YOLO(object):
                 centroid = Centroid(
                     predicted_class,
                     (right - left) / 2 + left,
-                    (bottom - top) / 2 + top
+                    (bottom - top) / 2 + top,
+                    score
                 )
                 centroid.Exist = True
                 centroids.append(centroid)
@@ -238,7 +239,6 @@ class YOLO(object):
 
 
 def detect_video(yolo, video_path, output_path=""):
-
     gps: GPS = []
     gps = parser_gps.get_gps_data_from_file(video_path)
     try:
@@ -269,85 +269,148 @@ def detect_video(yolo, video_path, output_path=""):
     # Номер кадра для проверки
     num_frame = 0
     num_gps = 0
-    while True:
-        return_value, frame = vid.read()
-        if not return_value:
-            print('End of file')
-            break
-        image = Image.fromarray(frame)
-        if num_frame <= 0:
-            num_frame = 5
-            # поиск объектов в кадре
-            image = yolo.detect_image(image, centroids, True)
-        else:
-            num_frame -= 1
-            image = yolo.detect_image(image, centroids, False)
-        result = np.asarray(image)
-        curr_time = timer()
-        exec_time = curr_time - prev_time
-        prev_time = curr_time
-        accum_time = accum_time + exec_time
-        curr_fps = curr_fps + 1
-        if accum_time > 1:
-            accum_time = accum_time - 1
-            fps = "FPS: " + str(curr_fps)
-            curr_fps = 0
-        cv2.putText(result, text=fps, org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=1, color=(158, 170, 6), thickness=3)
-
-        time_frame = int(vid.get(cv2.CAP_PROP_POS_MSEC)/1000)
-        try:
-            if datetime.datetime.strptime(gps[num_gps].time, '%H:%M:%S') < (time_start + datetime.timedelta(seconds=time_frame)):
-                num_gps += 1
-        except:
-            pass
-
-        if gps[num_gps].date != None:
-            cv2.putText(result, text='date: ' + str(gps[num_gps].date), org=(50, 250),
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=1, color=(158, 170, 6), thickness=3)
-        if gps[num_gps].time != None:
-            cv2.putText(result, text='time: ' + str(gps[num_gps].time), org=(50, 300),
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=1, color=(158, 170, 6), thickness=3)
-        if gps[num_gps].latitude != None:
-            cv2.putText(result, text='latitude: ' + str(gps[num_gps].latitude), org=(50, 100),
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=1, color=(158, 170, 6), thickness=3)
-        if gps[num_gps].longitude != None:
-            cv2.putText(result, text='longitude: ' + str(gps[num_gps].longitude), org=(50, 150),
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=1, color=(158, 170, 6), thickness=3)
-        if gps[num_gps].speed != None:
-            cv2.putText(result, text=f'speed: {str(gps[num_gps].speed)} km/h', org=(50, 200),
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+    with open(video_path + '.csv', 'w') as csv_file:
+        csv_file.write('id;name;score;latitude;longitude;date;time;speed\n')
+        # данные объектов, записанные в файл
+        written_centroids = []
+        # объекты, обнаруженные в прошлом кадре
+        last_centroids = []
+        while True:
+            return_value, frame = vid.read()
+            if not return_value:
+                print('End of file')
+                break
+            image = Image.fromarray(frame)
+            if num_frame <= 0:
+                num_frame = 3
+                # поиск объектов в кадре
+                image = yolo.detect_image(image, centroids, True)
+            else:
+                num_frame -= 1
+                image = yolo.detect_image(image, centroids, False)
+            
+            result = np.asarray(image)
+            curr_time = timer()
+            exec_time = curr_time - prev_time
+            prev_time = curr_time
+            accum_time = accum_time + exec_time
+            curr_fps = curr_fps + 1
+            if accum_time > 1:
+                accum_time = accum_time - 1
+                fps = "FPS: " + str(curr_fps)
+                curr_fps = 0
+            cv2.putText(result, text=fps, org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=1, color=(158, 170, 6), thickness=3)
 
-
-
-
-
-
-
-
-
-        cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-        cv2.imshow("result", result)
-        if isOutput:
-            out.write(result)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    yolo.close_session()
+            time_frame = int(vid.get(cv2.CAP_PROP_POS_MSEC)/1000)
+            try:
+                if datetime.datetime.strptime(gps[num_gps].time, '%H:%M:%S') < (time_start + datetime.timedelta(seconds=time_frame)):
+                    num_gps += 1
+            except:
+                pass
+            # выходная строка с данными обнаруженного объекта
+            out_line = ''
+            if len(written_centroids) == 0 and len(last_centroids) == 0:
+                last_centroids = centroids.copy()
+            # добавляем объект для записи в таблицу
+            if len(last_centroids) > 0:
+                for c in last_centroids:
+                    # если объект был в прошлом кадре, но сейчас его нет,
+                    # он вышел за пределы видимой области и находится там же, где и камера
+                    # то есть машина проехала 
+                    if not c in written_centroids and not c in centroids:
+                        out_line += str(c.Index) + ';' + c.Name + ';' + str(round(c.Score, 2))
+                        if gps[num_gps].latitude != None:
+                            out_line += ';' + str(gps[num_gps].latitude)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].longitude != None:
+                            out_line += ';' + str(gps[num_gps].longitude)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].date != None:
+                            out_line += ';' + str(gps[num_gps].date)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].time != None:
+                            out_line += ';' + str(gps[num_gps].time)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].speed != None:
+                            out_line += ';' + str(gps[num_gps].speed)
+                        else:
+                             out_line += ';'
+                        out_line += '\n'
+                        written_centroids.append(c)
+                last_centroids = centroids.copy()
+            if out_line != '':
+                csv_file.write(out_line)
+            if gps[num_gps].latitude != None:
+                cv2.putText(result, text='latitude: ' + str(gps[num_gps].latitude), org=(50, 100),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=1, color=(158, 170, 6), thickness=3)
+                out_line += ';' + str(gps[num_gps].longitude)
+                cv2.putText(result, text='longitude: ' + str(gps[num_gps].longitude), org=(50, 150),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=1, color=(158, 170, 6), thickness=3)
+                out_line += ';' + str(gps[num_gps].date)
+                cv2.putText(result, text='date: ' + str(gps[num_gps].date), org=(50, 250),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=1, color=(158, 170, 6), thickness=3)
+                out_line += ';' + str(gps[num_gps].time)
+                cv2.putText(result, text='time: ' + str(gps[num_gps].time), org=(50, 300),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=1, color=(158, 170, 6), thickness=3)
+                out_line += ';' + str(gps[num_gps].speed)
+                cv2.putText(result, text=f'speed: {str(gps[num_gps].speed)} km/h', org=(50, 200),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=1, color=(158, 170, 6), thickness=3)
+            cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+            cv2.imshow("result", result)
+            if isOutput:
+                out.write(result)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                out_line = ''
+                for c in centroids:
+                    # записываем все обнаруженные объекты, так как обнаружен конец видео
+                    if not c in written_centroids:
+                        out_line += str(c.Index) + ';' + c.Name + ';' + str(round(c.Score, 2))
+                        if gps[num_gps].latitude != None:
+                            out_line += ';' + str(gps[num_gps].latitude)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].longitude != None:
+                            out_line += ';' + str(gps[num_gps].longitude)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].date != None:
+                            out_line += ';' + str(gps[num_gps].date)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].time != None:
+                            out_line += ';' + str(gps[num_gps].time)
+                        else:
+                             out_line += ';'
+                        if gps[num_gps].speed != None:
+                            out_line += ';' + str(gps[num_gps].speed)
+                        else:
+                             out_line += ';'
+                        out_line += '\n'
+                        written_centroids.append(c)
+                csv_file.write(out_line)
+                break
+        yolo.close_session()
 
 # МОЙ КЛАСС
 class Centroid:
     # для всех объектов
     index = 0
 
-    def __init__(self, name, x, y):
+    def __init__(self, name, x, y, score):
         self.Name = name
         self.X = x
         self.Y = y
+        self.Score = score
         self.Index = Centroid.index
         self.Exist = True
 
