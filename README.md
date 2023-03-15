@@ -9,7 +9,7 @@
 
 ---
 
-## === БЫСТРЫЙ СТАРТ ===
+## БЫСТРЫЙ СТАРТ
 
 1. Download YOLOv3 weights from [YOLO website](http://pjreddie.com/darknet/yolo/).
 2. Convert the Darknet YOLO model to a Keras model.
@@ -27,7 +27,7 @@ python yolo_video.py [video_path] [output_path (optional)]
 
 Для Tiny YOLOv3 аналогичное, но с указанием другой модели и якорей `--model model_file` and `--anchors anchor_file`.
 
-### === ИСПОЛЬЗОВАНИЕ ===
+### ИСПОЛЬЗОВАНИЕ 
 Для того, чтобы получить подсказку по использованию yolo_video.py введите команду --help:
 ```
 запускаемый файл с параметрами: yolo_video.py [-h] [--model MODEL] [--anchors ANCHORS]
@@ -82,7 +82,7 @@ python yolo_video.py [video_path] [output_path (optional)]
 
 ---
 
-## === ДОПОЛНИТЕЛЬНО ===
+## ДОПОЛНИТЕЛЬНО 
 
 1. Версия питона и необходимые библиотеки.
     - Python 3.10.4
