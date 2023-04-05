@@ -2,18 +2,21 @@
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
-## Introduction
+## Предисловие
 
-A Keras implementation of YOLOv3 (Tensorflow backend) inspired by [allanzelener/YAD2K](https://github.com/allanzelener/YAD2K).
+Реализация Keras для YOLOv3 (серверная часть Tensorflow), вдохновленная [allanzelener/YAD2K](https://github.com/allanzelener/YAD2K ).
 
 
 ---
 
-## Quick Start
+## БЫСТРЫЙ СТАРТ
 
 1. Download YOLOv3 weights from [YOLO website](http://pjreddie.com/darknet/yolo/).
 2. Convert the Darknet YOLO model to a Keras model.
 3. Run YOLO detection.
+1. Скачайте веса YOLOv3 с [веб-сайта YOLO](http://pjreddie.com/darknet/yolo /).
+2. Преобразуйте модель Darknet YOLO в модель Keras.
+3. Запустите YOLO обнаружение.
 
 ```
 wget https://pjreddie.com/media/files/yolov3.weights
@@ -22,78 +25,78 @@ python yolo_video.py [OPTIONS...] --image, for image detection mode, OR
 python yolo_video.py [video_path] [output_path (optional)]
 ```
 
-For Tiny YOLOv3, just do in a similar way, just specify model path and anchor path with `--model model_file` and `--anchors anchor_file`.
+Для Tiny YOLOv3 аналогичное, но с указанием другой модели и якорей `--model model_file` and `--anchors anchor_file`.
 
-### Usage
-Use --help to see usage of yolo_video.py:
+### ИСПОЛЬЗОВАНИЕ 
+Для того, чтобы получить подсказку по использованию yolo_video.py введите команду --help:
 ```
-usage: yolo_video.py [-h] [--model MODEL] [--anchors ANCHORS]
+запускаемый файл с параметрами: yolo_video.py [-h] [--model MODEL] [--anchors ANCHORS]
                      [--classes CLASSES] [--gpu_num GPU_NUM] [--image]
                      [--input] [--output]
 
-positional arguments:
-  --input        Video input path
-  --output       Video output path
+аргументы для указания пути к видео:
+  --input        Путь к исходному видео
+  --output       Путь к выходному видео (необязательно)
 
-optional arguments:
-  -h, --help         show this help message and exit
-  --model MODEL      path to model weight file, default model_data/yolo.h5
-  --anchors ANCHORS  path to anchor definitions, default
+необязательные аргументы:
+  -h, --help         помощь, справка
+  --model MODEL      путь к файлу с весами, по умолчанию model_data/yolo.h5
+  --anchors ANCHORS  путь к файлу с якорями (привязка к координатам, областям интересов), по умолчанию
                      model_data/yolo_anchors.txt
-  --classes CLASSES  path to class definitions, default
+  --classes CLASSES  путь к файлу с классами, по умолчанию
                      model_data/coco_classes.txt
-  --gpu_num GPU_NUM  Number of GPU to use, default 1
-  --image            Image detection mode, will ignore all positional arguments
+  --gpu_num GPU_NUM  количество используемого ГПУ, по умолчанию 1
+  --image            Обнаружить на картинке вместо видео
 ```
 ---
 
-4. MultiGPU usage: use `--gpu_num N` to use N GPUs. It is passed to the [Keras multi_gpu_model()](https://keras.io/utils/#multi_gpu_model).
+4. Для использования нескольких ГПУ (видеокарт): используйте `--gpu_num N` где N число графических процессоров. Передается в [Keras multi_gpu_model()](https://keras.io/utils/#multi_gpu_model).
 
-## Training
+## Обучение
 
-1. Generate your own annotation file and class names file.  
-    One row for one image;  
-    Row format: `image_file_path box1 box2 ... boxN`;  
-    Box format: `x_min,y_min,x_max,y_max,class_id` (no space).  
-    For VOC dataset, try `python voc_annotation.py`  
-    Here is an example:
+1. Создайте свой файл аннотаций (с помощью CVT или Label Studio) и файл с классами.  
+    Пример строки аннотаций;  
+    Строка: `image_file_path box1 box2 ... boxN`;  
+    Коробка: `x_min,y_min,x_max,y_max,class_id` (без пробелов).  
+    Для набора данных VOC: `python voc_annotation.py`  
+    Пример:
     ```
     path/to/img1.jpg 50,100,150,200,0 30,50,200,120,3
     path/to/img2.jpg 120,300,250,600,2
     ...
     ```
 
-2. Make sure you have run `python convert.py -w yolov3.cfg yolov3.weights model_data/yolo_weights.h5`  
-    The file model_data/yolo_weights.h5 is used to load pretrained weights.
+2. Убедитесь, что вы запустили `python convert.py -w yolov3.cfg yolov3.weights model_data/yolo_weights.h5`
+   Файл model_data/yolo_weights.h5 используется для загрузки предварительно подготовленных весов.
 
-3. Modify train.py and start training.  
+3. Измените train.py и начните обучение.  
     `python train.py`  
-    Use your trained weights or checkpoint weights with command line option `--model model_file` when using yolo_video.py
-    Remember to modify class path or anchor path, with `--classes class_file` and `--anchors anchor_file`.
+    Используйте свои тренировочные веса или контрольные веса с помощью опции командной строки`--model model_file` когда используте yolo_video.py
+    Не забудьте изменить путь к классу или путь привязки с помощью `--classes class_file` и `--anchors anchor_file`.
 
-If you want to use original pretrained weights for YOLOv3:  
+Для получению оригинальных весов YOLOv3:  
     1. `wget https://pjreddie.com/media/files/darknet53.conv.74`  
-    2. rename it as darknet53.weights  
+    2. Переименуйте darknet53.weights  
     3. `python convert.py -w darknet53.cfg darknet53.weights model_data/darknet53_weights.h5`  
-    4. use model_data/darknet53_weights.h5 in train.py
+    4. Используйте model_data/darknet53_weights.h5 в train.py
 
 ---
 
-## Some issues to know
+## ДОПОЛНИТЕЛЬНО 
 
-1. The test environment is
+1. Версия питона и необходимые библиотеки.
     - Python 3.10.4
     - Keras 2.10.0
     - tensorflow 2.11.0
 
-2. Default anchors are used. If you use your own anchors, probably some changes are needed.
+2. Для формирования своих якорей используйте convert.py
 
-3. The inference result is not totally the same as Darknet but the difference is small.
+3. Результат вывода не полностью совпадает с Даркнетом, но разница невелика.
 
-4. The speed is slower than Darknet. Replacing PIL with opencv may help a little.
+4. Скорость медленнее, чем в Даркнете. Замена PIL на opencv может немного помочь.
 
-5. Always load pretrained weights and freeze layers in the first stage of training. Or try Darknet training. It's OK if there is a mismatch warning.
+5. Всегда загружайте предварительно подготовленные веса и замораживайте слои на первом этапе тренировки. Или попробуйте обучение в Даркнете. Это нормально, если есть предупреждение о несоответствии.
 
-6. The training strategy is for reference only. Adjust it according to your dataset and your goal. And add further strategy if needed.
+6. Стратегия обучения приведена только для справки. Отрегулируйте его в соответствии с вашим набором данных и вашей целью. И при необходимости добавьте дополнительную стратегию.
 
-7. For speeding up the training process with frozen layers train_bottleneck.py can be used. It will compute the bottleneck features of the frozen model first and then only trains the last layers. This makes training on CPU possible in a reasonable time. See [this](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html) for more information on bottleneck features.
+7. Для ускорения процесса приготовления с замороженными слоями train_bottleneck.py может быть использован. Сначала он вычислит узкие места замороженной модели, а затем обучит только последние слои. Это делает возможным обучение на процессоре в разумные сроки. Посмотрите [this](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html ) для получения дополнительной информации о функциях "узкого места".
