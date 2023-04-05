@@ -20,9 +20,9 @@ from yolo3.utils import letterbox_image
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/yolo_weights.h5',
-        "anchors_path": 'yolo_anchors.txt',
-        "classes_path": 'model_data/coco_classes.txt',
+        "model_path": 'input/trained_weights_final.h5',
+        "anchors_path": 'model_data/signs_anchors.txt',
+        "classes_path": 'input/signs_classes.txt',
         "score": 0.3,
         "iou": 0.45,
         "model_image_size": (416, 416),
@@ -107,7 +107,7 @@ class YOLO(object):
                                            score_threshold=self.score, iou_threshold=self.iou)
         return boxes, scores, classes
 
-    def detect_image(self, image, centroids, is_enable):
+    def detect_image(self, image, centroids=[], is_enable=True):
         start = timer()
 
         if self.model_image_size != (None, None):
@@ -140,10 +140,6 @@ class YOLO(object):
                                   size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
         thickness = (image.size[0] + image.size[1]) // 300
 
-        # сбрасываем параметр на случай, если центроид больше не сущуствует
-        for centroid in centroids:
-            centroid.Exist = False
-
         for i, c in reversed(list(enumerate(self.out_classes))):
             # распознанный класс
             predicted_class = self.class_names[c]
@@ -166,7 +162,7 @@ class YOLO(object):
                 if centroid.compare(predicted_class, left, top, right, bottom):
                     centroid.X = (right - left) / 2 + left
                     centroid.Y = (bottom - top) / 2 + top
-                    centroid.Exist = True
+                    centroid.LifeTime = Centroid.DEFAULT_LIFETIME
                     is_exist = True
                     # запись индекса в метку
                     label_index = str(centroid.Index)
@@ -186,7 +182,7 @@ class YOLO(object):
                     (bottom - top) / 2 + top,
                     score
                 )
-                centroid.Exist = True
+                centroid.LifeTime = Centroid.DEFAULT_LIFETIME
                 centroids.append(centroid)
                 # запись индекса в метку
                 label_index = str(centroid.Index)
@@ -223,13 +219,15 @@ class YOLO(object):
 
         # удаляем неактуальные центроиды
         i = 0
-        while True:
-            if i >= len(centroids):
-                break
-            if not centroids[i].Exist:
-                centroids.pop(i)
-            i += 1
-
+        if len(centroids) > 0:
+            while True:
+                if i >= len(centroids):
+                    break
+                centroids[i].LifeTime -= 1
+                if centroids[i].LifeTime <= 0:
+                    centroids.pop(i)
+                else:
+                    i += 1
         end = timer()
         print(end - start)
         return image
@@ -238,7 +236,57 @@ class YOLO(object):
         self.sess.close()
 
 
+# проверка точности распознавания по датасету из картинок
+# если центроид окажется внутри распознаваемого объекта
+# и класс совпадает, то объект распознан верно
+def test_accuracy(yolo):
+    annotation_path = "model_data/signs_annotations.txt"
+    classes_path = "input/signs_classes.txt"
+    print("start testing...")
+    # обнаруженные центроиды
+    centroids = []
+    # должно быть распознано объектов
+    num_need_detect = 0
+    # распознано правильно
+    num_ok_detect = 0
+    # распознано ложно
+    num_wrong_detect = 0
+    
+    class_names = []
+    with open(classes_path, encoding='utf-8') as f:
+        class_names = f.readlines()
+        class_names = [c.strip() for c in class_names]
+    
+    with open(annotation_path) as f:
+        lines = f.readlines()
+    
+    for line in lines:
+        annotation = line.split(' ')
+        img = Image.open(annotation[0].strip())
+        num_need_detect += len(annotation) - 1
+        yolo.detect_image(img, centroids, True)
+        if len(annotation) > 1:
+            num_wrong_detect += (len(annotation) - 1 + len(centroids))
+            for c in centroids:
+                box = annotation[1].strip().split(',')
+                if c.compare(class_names[int(box[4])], int(box[0]), int(box[1]), int(box[2]), int(box[3])):
+                    num_ok_detect += 1
+                else:
+                    num_wrong_detect += 1
+        elif len(centroids) > 0:
+            num_wrong_detect += len(centroids)
+        centroids = []
+    print('Правильно/Всего: ' + str(num_ok_detect) + '/' + str(num_need_detect) + ' Ошибочно: ' + str(num_wrong_detect))
+    
+    
+      
+        
 def detect_video(yolo, video_path, output_path=""):
+    # код для проверки точности обученной модели
+    #test_accuracy(yolo)
+    #yolo.close_session()
+    #return
+    # код без проверки
     gps: GPS = []
     gps = parser_gps.get_gps_data_from_file(video_path)
     try:
@@ -265,10 +313,12 @@ def detect_video(yolo, video_path, output_path=""):
     fps = "FPS: ??"
     prev_time = timer()
     # ОБЪЕКТЫ ДЛЯ СРАВНЕНИЯ
+    # это точки, указывающие на центр объекта, чтобы при обнаружении знать, что это тот же самый объект
     centroids = []
     # Номер кадра для проверки
     num_frame = 0
     num_gps = 0
+    
     with open(video_path + '.csv', 'w') as csv_file:
         csv_file.write('id;name;score;latitude;longitude;date;time;speed\n')
         # данные объектов, записанные в файл
@@ -310,7 +360,7 @@ def detect_video(yolo, video_path, output_path=""):
                 pass
             # выходная строка с данными обнаруженного объекта
             out_line = ''
-            if len(written_centroids) == 0 and len(last_centroids) == 0:
+            if len(last_centroids) == 0:
                 last_centroids = centroids.copy()
             # добавляем объект для записи в таблицу
             if len(last_centroids) > 0:
@@ -365,6 +415,7 @@ def detect_video(yolo, video_path, output_path=""):
                 cv2.putText(result, text=f'speed: {str(gps[num_gps].speed)} km/h', org=(50, 200),
                             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                             fontScale=1, color=(158, 170, 6), thickness=3)
+                
             cv2.namedWindow("result", cv2.WINDOW_NORMAL)
             cv2.imshow("result", result)
             if isOutput:
@@ -401,8 +452,12 @@ def detect_video(yolo, video_path, output_path=""):
                 break
         yolo.close_session()
 
-# МОЙ КЛАСС
+
+
+# класс хранит координаты центральной точки обнаруженного объекта
 class Centroid:
+    # время существования центроида (количество кадров) по умолчанию
+    DEFAULT_LIFETIME = 12
     # для всех объектов
     index = 0
 
@@ -412,7 +467,8 @@ class Centroid:
         self.Y = y
         self.Score = score
         self.Index = Centroid.index
-        self.Exist = True
+        # время существования центроида (количество кадров)
+        self.LifeTime = self.DEFAULT_LIFETIME
 
     # Проверяет является ли центроид этим объектом
     def compare(self, name, x1, y1, x2, y2):
@@ -421,3 +477,4 @@ class Centroid:
                 if self.Y > y1 and self.Y < y2:
                     return True
         return False
+

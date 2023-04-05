@@ -14,10 +14,10 @@ from yolo3.utils import get_random_data
 
 
 def _main():
-    annotation_path = '21_classes/train_21c.txt'
-    log_dir = 'C:/Users/n.klepikov/PycharmProjects/yolo3/'
-    classes_path = '21_classes/classes_21.txt'
-    anchors_path = 'yolo_anchors.txt'
+    annotation_path = 'model_data/signs_annotations.txt'
+    log_dir = 'logs/'
+    classes_path = 'input/signs_classes.txt'
+    anchors_path = 'model_data/signs_anchors.txt'
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
@@ -27,14 +27,13 @@ def _main():
     is_tiny_version = len(anchors)==6 # default setting
     if is_tiny_version:
         model = create_tiny_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/tiny_yolo_weights.h5')
+            freeze_body=2, weights_path='model_data/signs_weights.h5')
     else:
         model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/yolo.h5') # make sure you know what you freeze
+            freeze_body=2, weights_path='model_data/signs_weights.h5') # make sure you know what you freeze
 
     logging = TensorBoard(log_dir=log_dir)
-    #log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/new_model.h5'
-    log_dir_1 = 'C:/Users/n.klepikov/PycharmProjects/yolo3/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
+    log_dir_1 = 'logs/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
     checkpoint = ModelCheckpoint(log_dir_1,
         monitor='val_loss', save_weights_only=True, save_best_only=True, save_freq='epoch')
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
@@ -91,7 +90,7 @@ def _main():
 
 def get_classes(classes_path):
     '''loads the classes'''
-    with open(classes_path) as f:
+    with open(classes_path, 'r', encoding='utf-8') as f:
         class_names = f.readlines()
     class_names = [c.strip() for c in class_names]
     return class_names

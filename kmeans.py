@@ -4,7 +4,7 @@ class YOLO_Kmeans:
 
     def __init__(self, cluster_number, filename):
         self.cluster_number = cluster_number
-        self.filename = "21_classes/train_21c.txt"
+        self.filename = "model_data/signs_annotations.txt"
 
     def iou(self, boxes, clusters):  # 1 box -> k clusters
         n = boxes.shape[0]
@@ -97,6 +97,6 @@ class YOLO_Kmeans:
 
 if __name__ == "__main__":
     cluster_number = 9
-    filename = "21_classes/train_21c.txt"
+    filename = "model_data/signs_annotations.txt"
     kmeans = YOLO_Kmeans(cluster_number, filename)
     kmeans.txt2clusters()
