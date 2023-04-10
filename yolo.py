@@ -23,7 +23,7 @@ class YOLO(object):
         "model_path": 'input/trained_weights_final.h5',
         "anchors_path": 'model_data/signs_anchors.txt',
         "classes_path": 'input/signs_classes.txt',
-        "score": 0.3,
+        "score": 0.51,
         "iou": 0.45,
         "model_image_size": (416, 416),
         "gpu_num": 1,
@@ -331,13 +331,13 @@ def detect_video(yolo, video_path, output_path=""):
                 print('End of file')
                 break
             image = Image.fromarray(frame)
-            if num_frame <= 0:
-                num_frame = 3
+            #if num_frame <= 0:
+            #    num_frame = 3
                 # поиск объектов в кадре
-                image = yolo.detect_image(image, centroids, True)
-            else:
-                num_frame -= 1
-                image = yolo.detect_image(image, centroids, False)
+            image = yolo.detect_image(image, centroids, True)
+            #else:
+            #    num_frame -= 1
+            #    image = yolo.detect_image(image, centroids, False)
             
             result = np.asarray(image)
             curr_time = timer()
@@ -457,7 +457,7 @@ def detect_video(yolo, video_path, output_path=""):
 # класс хранит координаты центральной точки обнаруженного объекта
 class Centroid:
     # время существования центроида (количество кадров) по умолчанию
-    DEFAULT_LIFETIME = 12
+    DEFAULT_LIFETIME = 6
     # для всех объектов
     index = 0
 
