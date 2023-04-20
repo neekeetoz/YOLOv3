@@ -477,4 +477,3 @@ class Centroid:
                 if self.Y > y1 and self.Y < y2:
                     return True
         return False
-
