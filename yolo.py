@@ -9,6 +9,7 @@ from parser_gps import GPS
 import parser_gps
 import numpy as np
 import tensorflow as tf
+import math
 from keras import backend as K
 from keras.models import load_model
 from keras.layers import Input
@@ -180,7 +181,8 @@ class YOLO(object):
                     predicted_class,
                     (right - left) / 2 + left,
                     (bottom - top) / 2 + top,
-                    score
+                    score,
+                    (right - left)
                 )
                 centroid.LifeTime = Centroid.DEFAULT_LIFETIME
                 centroids.append(centroid)
@@ -367,17 +369,17 @@ def detect_video(yolo, video_path, output_path=""):
                 for c in last_centroids:
                     # если объект был в прошлом кадре, но сейчас его нет,
                     # он вышел за пределы видимой области и находится там же, где и камера
-                    # то есть машина проехала 
+                    # то есть машина проехала
                     if not c in written_centroids and not c in centroids:
                         out_line += str(c.Index) + ';' + c.Name + ';' + str(round(c.Score, 2))
-                        if gps[num_gps].latitude != None:
-                            out_line += ';' + str(gps[num_gps].latitude)
+                        
+                        if gps[num_gps].latitude != None and gps[num_gps].longitude != None:
+                            # todo: поменять местами широту и долготу
+                            (sign_latitude, sign_longitude) = get_obj_coord(float(gps[num_gps].longitude), float(gps[num_gps].latitude), c.Size, get_side(image.size[0], c.X), image)
+                            out_line += ';' + str(sign_latitude)
+                            out_line += ';' + str(sign_longitude)
                         else:
-                             out_line += ';'
-                        if gps[num_gps].longitude != None:
-                            out_line += ';' + str(gps[num_gps].longitude)
-                        else:
-                             out_line += ';'
+                             out_line += ';;'
                         if gps[num_gps].date != None:
                             out_line += ';' + str(gps[num_gps].date)
                         else:
@@ -396,6 +398,8 @@ def detect_video(yolo, video_path, output_path=""):
             if out_line != '':
                 csv_file.write(out_line)
             if gps[num_gps].latitude != None:
+                last_latitude = gps[num_gps].latitude
+                last_longitude = gps[num_gps].longitude
                 cv2.putText(result, text='latitude: ' + str(gps[num_gps].latitude), org=(50, 100),
                             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                             fontScale=1, color=(158, 170, 6), thickness=3)
@@ -453,6 +457,84 @@ def detect_video(yolo, video_path, output_path=""):
         yolo.close_session()
 
 
+def get_side(width, x):
+    """возвращает сторону на которой находится координата
+
+    Args:
+        width (double): ширина изображения
+        x (double): координата X
+
+    Returns:
+        str: сторона
+    """
+    return x >= (width / 2)
+    
+last_latitude = 0
+last_longitude = 0
+def get_obj_coord(latitude, longitude, width, isRight, image):
+    """Возвращает координаты объекта на изображении, относительно камеры
+
+    Args:
+        latitude (double): широта
+        longitude (double): долгота
+        width (int): ширина рамки обнаруженного объекта в px
+        side (SideImage, optional): с какой стороны находится объект.
+
+    Returns:
+        (double, double): широта и долгота
+    """
+    # стандартные размеры знака в пикселях
+    default_width = 100
+    default_height = 100
+    # определяем направление
+    isNorth = ((latitude - last_latitude) >= 0)
+    isSouth = ((latitude - last_latitude) <= 0)
+    isEast = ((longitude - last_longitude) >= 0)
+    isWest = ((longitude - last_longitude) <= 0)
+    
+    delim = int(longitude/10)
+    multiple_latitude = 71.7
+    # у каждой широты 1 градус имеет свое расстояние в км
+    match delim:
+        case 4:
+            multiple_latitude = 85.4
+        case 5:
+            multiple_latitude = 71.7
+        case 6:
+            multiple_latitude = 55.8
+        case 7:
+            multiple_latitude = 38.2
+    multiple_longitude = 111.1
+    
+    # реальная ширина знака в метрах
+    width_real = 0.6
+    # real_height = 0.6   # высота объекта в реальности, метры
+    # image_height = 56   # высота объекта на фото, пиксели
+    # distance = 5        # расстояние от камеры до объекта, метры
+    # focal_length = (image_height * distance) / real_height
+    focal_length = 560
+    # расстояние от камеры до объекта
+    #distance_forward = width_real / width * 6
+    distance_forward = (width_real * focal_length) / width
+    # фокусное расстояние
+    f = 1000
+    
+    angle = math.radians(170)
+    k = 2 * math.tan(angle/2) / image.size[0]
+    # расстояние в сторону от камеры в метрах
+    distance_to_side = k * focal_length / (1 - k * distance_forward)
+    distance_to_side *= -1 if isRight else 1
+    # todo: здесь возможна ошибка в выборе знака (+/-)
+    if isNorth:
+        longitude += distance_to_side / 1000 / multiple_longitude
+    if isSouth:
+        longitude -= distance_to_side / 1000 / multiple_longitude
+    if isEast:
+        latitude -= distance_forward / 1000 / multiple_latitude
+    if isWest:
+        latitude += distance_forward / 1000 / multiple_latitude
+    return (round(latitude, 6), round(longitude, 6))
+        
 
 # класс хранит координаты центральной точки обнаруженного объекта
 class Centroid:
@@ -461,7 +543,7 @@ class Centroid:
     # для всех объектов
     index = 0
 
-    def __init__(self, name, x, y, score):
+    def __init__(self, name, x, y, score, size):
         self.Name = name
         self.X = x
         self.Y = y
@@ -469,6 +551,8 @@ class Centroid:
         self.Index = Centroid.index
         # время существования центроида (количество кадров)
         self.LifeTime = self.DEFAULT_LIFETIME
+        # ширина или высота объекта
+        self.Size = size
 
     # Проверяет является ли центроид этим объектом
     def compare(self, name, x1, y1, x2, y2):

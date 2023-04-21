@@ -23,13 +23,13 @@ def convert_data(img, xml_path, out_file, list_classes):
 # программа объединяет файлы с аннотациями в один и создает файл для списка классов 
 # здесь нужно указать свои пути
 # путь к файлу с классами
-path_to_classes_file = 'input/signs_classes.txt'
+path_to_classes_file = 'input/signs_classes_720p.txt'
 # путь к каталогу с аннотациями
 path_to_annotations = 'Annotations/'
 # путь к каталогу с изображениями
 path_to_images = 'images'
 # выходной файл с анннотациями для обучения
-path_to_out_annotations = 'model_data/signs_annotations.txt'
+path_to_out_annotations = 'model_data/signs_annotations_720p.txt'
 
 list_classes = []
 #f_classes.close()

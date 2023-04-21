@@ -1,0 +1,944 @@
+Date/Time : 2022:06:25 11:09:57.000Z
+Latitude : 0 deg 0' 0.00" N
+Longitude : 0 deg 0' 0.00" E
+Speed : 0
+Date/Time : 2022:06:25 11:09:57.540Z
+Latitude : 50 deg 7' 10.82" N
+Longitude : 53 deg 12' 30.90" E
+Speed : 7
+Date/Time : 2022:06:25 11:09:58.540Z
+Latitude : 50 deg 7' 10.78" N
+Longitude : 53 deg 12' 30.98" E
+Speed : 7
+Date/Time : 2022:06:25 11:09:59.540Z
+Latitude : 50 deg 7' 10.75" N
+Longitude : 53 deg 12' 31.04" E
+Speed : 7
+Date/Time : 2022:06:25 11:10:00.540Z
+Latitude : 50 deg 7' 10.73" N
+Longitude : 53 deg 12' 31.13" E
+Speed : 7
+Date/Time : 2022:06:25 11:10:01.540Z
+Latitude : 50 deg 7' 10.73" N
+Longitude : 53 deg 12' 31.24" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:02.540Z
+Latitude : 50 deg 7' 10.79" N
+Longitude : 53 deg 12' 31.35" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:03.540Z
+Latitude : 50 deg 7' 10.90" N
+Longitude : 53 deg 12' 31.45" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:04.540Z
+Latitude : 50 deg 7' 11.06" N
+Longitude : 53 deg 12' 31.54" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:05.540Z
+Latitude : 50 deg 7' 11.25" N
+Longitude : 53 deg 12' 31.64" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:06.540Z
+Latitude : 50 deg 7' 11.45" N
+Longitude : 53 deg 12' 31.73" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:07.540Z
+Latitude : 50 deg 7' 11.65" N
+Longitude : 53 deg 12' 31.82" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:08.540Z
+Latitude : 50 deg 7' 11.82" N
+Longitude : 53 deg 12' 31.90" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:09.540Z
+Latitude : 50 deg 7' 11.98" N
+Longitude : 53 deg 12' 31.98" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:10.540Z
+Latitude : 50 deg 7' 12.12" N
+Longitude : 53 deg 12' 32.05" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:11.540Z
+Latitude : 50 deg 7' 12.25" N
+Longitude : 53 deg 12' 32.12" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:12.540Z
+Latitude : 50 deg 7' 12.41" N
+Longitude : 53 deg 12' 32.19" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:13.540Z
+Latitude : 50 deg 7' 12.56" N
+Longitude : 53 deg 12' 32.26" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:14.540Z
+Latitude : 50 deg 7' 12.70" N
+Longitude : 53 deg 12' 32.34" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:15.540Z
+Latitude : 50 deg 7' 12.85" N
+Longitude : 53 deg 12' 32.41" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:16.540Z
+Latitude : 50 deg 7' 12.99" N
+Longitude : 53 deg 12' 32.50" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:17.540Z
+Latitude : 50 deg 7' 13.16" N
+Longitude : 53 deg 12' 32.58" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:18.540Z
+Latitude : 50 deg 7' 13.36" N
+Longitude : 53 deg 12' 32.66" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:19.540Z
+Latitude : 50 deg 7' 13.54" N
+Longitude : 53 deg 12' 32.76" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:20.540Z
+Latitude : 50 deg 7' 13.74" N
+Longitude : 53 deg 12' 32.85" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:21.540Z
+Latitude : 50 deg 7' 13.93" N
+Longitude : 53 deg 12' 32.92" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:22.540Z
+Latitude : 50 deg 7' 14.10" N
+Longitude : 53 deg 12' 32.99" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:23.540Z
+Latitude : 50 deg 7' 14.24" N
+Longitude : 53 deg 12' 33.06" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:24.540Z
+Latitude : 50 deg 7' 14.39" N
+Longitude : 53 deg 12' 33.10" E
+Speed : 7
+Date/Time : 2022:06:25 11:10:25.540Z
+Latitude : 50 deg 7' 14.53" N
+Longitude : 53 deg 12' 33.16" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:26.540Z
+Latitude : 50 deg 7' 14.69" N
+Longitude : 53 deg 12' 33.23" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:27.540Z
+Latitude : 50 deg 7' 14.85" N
+Longitude : 53 deg 12' 33.30" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:28.540Z
+Latitude : 50 deg 7' 15.03" N
+Longitude : 53 deg 12' 33.36" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:29.540Z
+Latitude : 50 deg 7' 15.20" N
+Longitude : 53 deg 12' 33.44" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:30.540Z
+Latitude : 50 deg 7' 15.38" N
+Longitude : 53 deg 12' 33.54" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:31.540Z
+Latitude : 50 deg 7' 15.56" N
+Longitude : 53 deg 12' 33.63" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:32.540Z
+Latitude : 50 deg 7' 15.68" N
+Longitude : 53 deg 12' 33.74" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:33.540Z
+Latitude : 50 deg 7' 15.83" N
+Longitude : 53 deg 12' 33.84" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:34.540Z
+Latitude : 50 deg 7' 16.01" N
+Longitude : 53 deg 12' 33.94" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:35.540Z
+Latitude : 50 deg 7' 16.21" N
+Longitude : 53 deg 12' 34.04" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:36.540Z
+Latitude : 50 deg 7' 16.41" N
+Longitude : 53 deg 12' 34.13" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:37.540Z
+Latitude : 50 deg 7' 16.60" N
+Longitude : 53 deg 12' 34.22" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:38.540Z
+Latitude : 50 deg 7' 16.78" N
+Longitude : 53 deg 12' 34.28" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:39.540Z
+Latitude : 50 deg 7' 16.94" N
+Longitude : 53 deg 12' 34.34" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:40.540Z
+Latitude : 50 deg 7' 17.09" N
+Longitude : 53 deg 12' 34.39" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:41.540Z
+Latitude : 50 deg 7' 17.24" N
+Longitude : 53 deg 12' 34.46" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:42.540Z
+Latitude : 50 deg 7' 17.39" N
+Longitude : 53 deg 12' 34.53" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:43.540Z
+Latitude : 50 deg 7' 17.54" N
+Longitude : 53 deg 12' 34.60" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:44.540Z
+Latitude : 50 deg 7' 17.68" N
+Longitude : 53 deg 12' 34.68" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:45.540Z
+Latitude : 50 deg 7' 17.84" N
+Longitude : 53 deg 12' 34.77" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:46.540Z
+Latitude : 50 deg 7' 18.02" N
+Longitude : 53 deg 12' 34.87" E
+Speed : 18
+Date/Time : 2022:06:25 11:10:47.540Z
+Latitude : 50 deg 7' 18.24" N
+Longitude : 53 deg 12' 34.98" E
+Speed : 18
+Date/Time : 2022:06:25 11:10:48.540Z
+Latitude : 50 deg 7' 18.47" N
+Longitude : 53 deg 12' 35.08" E
+Speed : 18
+Date/Time : 2022:06:25 11:10:49.540Z
+Latitude : 50 deg 7' 18.70" N
+Longitude : 53 deg 12' 35.17" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:50.540Z
+Latitude : 50 deg 7' 18.92" N
+Longitude : 53 deg 12' 35.24" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:51.540Z
+Latitude : 50 deg 7' 19.09" N
+Longitude : 53 deg 12' 35.30" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:52.540Z
+Latitude : 50 deg 7' 19.21" N
+Longitude : 53 deg 12' 35.36" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:53.540Z
+Latitude : 50 deg 7' 19.33" N
+Longitude : 53 deg 12' 35.43" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:54.540Z
+Latitude : 50 deg 7' 19.50" N
+Longitude : 53 deg 12' 35.51" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:55.540Z
+Latitude : 50 deg 7' 19.70" N
+Longitude : 53 deg 12' 35.59" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:56.540Z
+Latitude : 50 deg 7' 19.90" N
+Longitude : 53 deg 12' 35.67" E
+Speed : 14
+Date/Time : 2022:06:25 11:10:57.540Z
+Latitude : 50 deg 7' 20.11" N
+Longitude : 53 deg 12' 35.72" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:58.540Z
+Latitude : 50 deg 7' 20.27" N
+Longitude : 53 deg 12' 35.78" E
+Speed : 10
+Date/Time : 2022:06:25 11:10:59.540Z
+Latitude : 50 deg 7' 20.39" N
+Longitude : 53 deg 12' 35.85" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:00.540Z
+Latitude : 50 deg 7' 20.50" N
+Longitude : 53 deg 12' 35.94" E
+Speed : 10
+Date/Time : 2022:06:25 11:11:01.540Z
+Latitude : 50 deg 7' 20.57" N
+Longitude : 53 deg 12' 36.04" E
+Speed : 14
+Date/Time : 2022:06:25 11:11:02.540Z
+Latitude : 50 deg 7' 20.69" N
+Longitude : 53 deg 12' 36.14" E
+Speed : 10
+Date/Time : 2022:06:25 11:11:03.540Z
+Latitude : 50 deg 7' 20.86" N
+Longitude : 53 deg 12' 36.20" E
+Speed : 10
+Date/Time : 2022:06:25 11:11:04.540Z
+Latitude : 50 deg 7' 20.97" N
+Longitude : 53 deg 12' 36.26" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:05.540Z
+Latitude : 50 deg 7' 21.11" N
+Longitude : 53 deg 12' 36.29" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:06.540Z
+Latitude : 50 deg 7' 21.21" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:07.540Z
+Latitude : 50 deg 7' 21.32" N
+Longitude : 53 deg 12' 36.37" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:08.540Z
+Latitude : 50 deg 7' 21.46" N
+Longitude : 53 deg 12' 36.39" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:09.540Z
+Latitude : 50 deg 7' 21.55" N
+Longitude : 53 deg 12' 36.39" E
+Speed : 3
+Date/Time : 2022:06:25 11:11:10.540Z
+Latitude : 50 deg 7' 21.59" N
+Longitude : 53 deg 12' 36.37" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:11.540Z
+Latitude : 50 deg 7' 21.63" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:12.540Z
+Latitude : 50 deg 7' 21.66" N
+Longitude : 53 deg 12' 36.32" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:13.540Z
+Latitude : 50 deg 7' 21.67" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:14.540Z
+Latitude : 50 deg 7' 21.68" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:15.540Z
+Latitude : 50 deg 7' 21.69" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:16.540Z
+Latitude : 50 deg 7' 21.70" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:17.540Z
+Latitude : 50 deg 7' 21.71" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:18.540Z
+Latitude : 50 deg 7' 21.71" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:19.540Z
+Latitude : 50 deg 7' 21.72" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:20.540Z
+Latitude : 50 deg 7' 21.72" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:21.540Z
+Latitude : 50 deg 7' 21.73" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:22.540Z
+Latitude : 50 deg 7' 21.73" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:23.540Z
+Latitude : 50 deg 7' 21.73" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:24.540Z
+Latitude : 50 deg 7' 21.73" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:25.540Z
+Latitude : 50 deg 7' 21.73" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:26.540Z
+Latitude : 50 deg 7' 21.73" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:27.540Z
+Latitude : 50 deg 7' 21.75" N
+Longitude : 53 deg 12' 36.32" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:28.540Z
+Latitude : 50 deg 7' 21.75" N
+Longitude : 53 deg 12' 36.32" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:29.540Z
+Latitude : 50 deg 7' 21.76" N
+Longitude : 53 deg 12' 36.32" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:30.540Z
+Latitude : 50 deg 7' 21.76" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:31.540Z
+Latitude : 50 deg 7' 21.76" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:32.540Z
+Latitude : 50 deg 7' 21.76" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:33.540Z
+Latitude : 50 deg 7' 21.78" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:34.540Z
+Latitude : 50 deg 7' 21.78" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:35.540Z
+Latitude : 50 deg 7' 21.78" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:36.540Z
+Latitude : 50 deg 7' 21.78" N
+Longitude : 53 deg 12' 36.33" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:37.540Z
+Latitude : 50 deg 7' 21.79" N
+Longitude : 53 deg 12' 36.34" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:38.540Z
+Latitude : 50 deg 7' 21.79" N
+Longitude : 53 deg 12' 36.34" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:39.540Z
+Latitude : 50 deg 7' 21.79" N
+Longitude : 53 deg 12' 36.34" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:40.540Z
+Latitude : 50 deg 7' 21.81" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:41.540Z
+Latitude : 50 deg 7' 21.83" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:42.540Z
+Latitude : 50 deg 7' 21.84" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:43.540Z
+Latitude : 50 deg 7' 21.84" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:44.540Z
+Latitude : 50 deg 7' 21.85" N
+Longitude : 53 deg 12' 36.36" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:45.540Z
+Latitude : 50 deg 7' 21.87" N
+Longitude : 53 deg 12' 36.37" E
+Speed : 0
+Date/Time : 2022:06:25 11:11:46.540Z
+Latitude : 50 deg 7' 21.89" N
+Longitude : 53 deg 12' 36.38" E
+Speed : 3
+Date/Time : 2022:06:25 11:11:47.540Z
+Latitude : 50 deg 7' 22.02" N
+Longitude : 53 deg 12' 36.42" E
+Speed : 10
+Date/Time : 2022:06:25 11:11:48.540Z
+Latitude : 50 deg 7' 22.21" N
+Longitude : 53 deg 12' 36.46" E
+Speed : 14
+Date/Time : 2022:06:25 11:11:49.540Z
+Latitude : 50 deg 7' 22.43" N
+Longitude : 53 deg 12' 36.53" E
+Speed : 14
+Date/Time : 2022:06:25 11:11:50.540Z
+Latitude : 50 deg 7' 22.61" N
+Longitude : 53 deg 12' 36.60" E
+Speed : 14
+Date/Time : 2022:06:25 11:11:51.540Z
+Latitude : 50 deg 7' 22.81" N
+Longitude : 53 deg 12' 36.67" E
+Speed : 10
+Date/Time : 2022:06:25 11:11:52.540Z
+Latitude : 50 deg 7' 22.99" N
+Longitude : 53 deg 12' 36.71" E
+Speed : 10
+Date/Time : 2022:06:25 11:11:53.540Z
+Latitude : 50 deg 7' 23.15" N
+Longitude : 53 deg 12' 36.75" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:54.540Z
+Latitude : 50 deg 7' 23.27" N
+Longitude : 53 deg 12' 36.77" E
+Speed : 7
+Date/Time : 2022:06:25 11:11:55.540Z
+Latitude : 50 deg 7' 23.35" N
+Longitude : 53 deg 12' 36.80" E
+Speed : 3
+Date/Time : 2022:06:25 11:11:56.540Z
+Latitude : 50 deg 7' 23.42" N
+Longitude : 53 deg 12' 36.82" E
+Speed : 3
+Date/Time : 2022:06:25 11:11:57.540Z
+Latitude : 50 deg 7' 23.45" N
+Longitude : 53 deg 12' 36.85" E
+Speed : 3
+Date/Time : 2022:06:25 11:11:58.540Z
+Latitude : 50 deg 7' 23.46" N
+Longitude : 53 deg 12' 36.91" E
+Speed : 3
+Date/Time : 2022:06:25 11:11:59.540Z
+Latitude : 50 deg 7' 23.41" N
+Longitude : 53 deg 12' 36.98" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:00.540Z
+Latitude : 50 deg 7' 23.33" N
+Longitude : 53 deg 12' 37.02" E
+Speed : 7
+Date/Time : 2022:06:25 11:12:01.540Z
+Latitude : 50 deg 7' 23.24" N
+Longitude : 53 deg 12' 37.07" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:02.540Z
+Latitude : 50 deg 7' 23.14" N
+Longitude : 53 deg 12' 37.11" E
+Speed : 7
+Date/Time : 2022:06:25 11:12:03.540Z
+Latitude : 50 deg 7' 23.04" N
+Longitude : 53 deg 12' 37.11" E
+Speed : 7
+Date/Time : 2022:06:25 11:12:04.540Z
+Latitude : 50 deg 7' 22.95" N
+Longitude : 53 deg 12' 37.09" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:05.540Z
+Latitude : 50 deg 7' 22.91" N
+Longitude : 53 deg 12' 37.07" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:06.540Z
+Latitude : 50 deg 7' 22.89" N
+Longitude : 53 deg 12' 37.07" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:07.540Z
+Latitude : 50 deg 7' 22.89" N
+Longitude : 53 deg 12' 37.05" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:08.540Z
+Latitude : 50 deg 7' 22.89" N
+Longitude : 53 deg 12' 37.02" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:09.540Z
+Latitude : 50 deg 7' 22.88" N
+Longitude : 53 deg 12' 37.00" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:10.540Z
+Latitude : 50 deg 7' 22.86" N
+Longitude : 53 deg 12' 37.00" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:11.540Z
+Latitude : 50 deg 7' 22.86" N
+Longitude : 53 deg 12' 37.00" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:12.540Z
+Latitude : 50 deg 7' 22.85" N
+Longitude : 53 deg 12' 36.98" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:13.540Z
+Latitude : 50 deg 7' 22.80" N
+Longitude : 53 deg 12' 36.98" E
+Speed : 7
+Date/Time : 2022:06:25 11:12:14.540Z
+Latitude : 50 deg 7' 22.65" N
+Longitude : 53 deg 12' 36.89" E
+Speed : 10
+Date/Time : 2022:06:25 11:12:15.540Z
+Latitude : 50 deg 7' 22.49" N
+Longitude : 53 deg 12' 36.82" E
+Speed : 10
+Date/Time : 2022:06:25 11:12:16.540Z
+Latitude : 50 deg 7' 22.32" N
+Longitude : 53 deg 12' 36.76" E
+Speed : 10
+Date/Time : 2022:06:25 11:12:17.540Z
+Latitude : 50 deg 7' 22.16" N
+Longitude : 53 deg 12' 36.69" E
+Speed : 7
+Date/Time : 2022:06:25 11:12:18.540Z
+Latitude : 50 deg 7' 22.03" N
+Longitude : 53 deg 12' 36.66" E
+Speed : 7
+Date/Time : 2022:06:25 11:12:19.540Z
+Latitude : 50 deg 7' 21.86" N
+Longitude : 53 deg 12' 36.58" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:20.540Z
+Latitude : 50 deg 7' 21.82" N
+Longitude : 53 deg 12' 36.53" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:21.540Z
+Latitude : 50 deg 7' 21.76" N
+Longitude : 53 deg 12' 36.52" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:22.540Z
+Latitude : 50 deg 7' 21.69" N
+Longitude : 53 deg 12' 36.50" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:23.540Z
+Latitude : 50 deg 7' 21.66" N
+Longitude : 53 deg 12' 36.50" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:24.540Z
+Latitude : 50 deg 7' 21.63" N
+Longitude : 53 deg 12' 36.50" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:25.540Z
+Latitude : 50 deg 7' 21.59" N
+Longitude : 53 deg 12' 36.49" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:26.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.48" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:27.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.47" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:28.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.45" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:29.540Z
+Latitude : 50 deg 7' 21.56" N
+Longitude : 53 deg 12' 36.43" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:30.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:31.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.39" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:32.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.39" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:33.540Z
+Latitude : 50 deg 7' 21.56" N
+Longitude : 53 deg 12' 36.38" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:34.540Z
+Latitude : 50 deg 7' 21.55" N
+Longitude : 53 deg 12' 36.38" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:35.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.39" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:36.540Z
+Latitude : 50 deg 7' 21.58" N
+Longitude : 53 deg 12' 36.38" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:37.540Z
+Latitude : 50 deg 7' 21.60" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:38.540Z
+Latitude : 50 deg 7' 21.59" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:39.540Z
+Latitude : 50 deg 7' 21.58" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:40.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:41.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:42.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:43.540Z
+Latitude : 50 deg 7' 21.57" N
+Longitude : 53 deg 12' 36.40" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:44.540Z
+Latitude : 50 deg 7' 21.56" N
+Longitude : 53 deg 12' 36.39" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:45.540Z
+Latitude : 50 deg 7' 21.56" N
+Longitude : 53 deg 12' 36.37" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:46.540Z
+Latitude : 50 deg 7' 21.56" N
+Longitude : 53 deg 12' 36.36" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:47.540Z
+Latitude : 50 deg 7' 21.55" N
+Longitude : 53 deg 12' 36.36" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:48.540Z
+Latitude : 50 deg 7' 21.55" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:49.540Z
+Latitude : 50 deg 7' 21.54" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:50.540Z
+Latitude : 50 deg 7' 21.53" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:51.540Z
+Latitude : 50 deg 7' 21.51" N
+Longitude : 53 deg 12' 36.35" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:52.540Z
+Latitude : 50 deg 7' 21.49" N
+Longitude : 53 deg 12' 36.32" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:53.540Z
+Latitude : 50 deg 7' 21.42" N
+Longitude : 53 deg 12' 36.31" E
+Speed : 0
+Date/Time : 2022:06:25 11:12:54.540Z
+Latitude : 50 deg 7' 21.36" N
+Longitude : 53 deg 12' 36.30" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:55.540Z
+Latitude : 50 deg 7' 21.30" N
+Longitude : 53 deg 12' 36.28" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:56.540Z
+Latitude : 50 deg 7' 21.22" N
+Longitude : 53 deg 12' 36.25" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:57.540Z
+Latitude : 50 deg 7' 21.13" N
+Longitude : 53 deg 12' 36.22" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:58.540Z
+Latitude : 50 deg 7' 21.06" N
+Longitude : 53 deg 12' 36.19" E
+Speed : 3
+Date/Time : 2022:06:25 11:12:59.540Z
+Latitude : 50 deg 7' 20.97" N
+Longitude : 53 deg 12' 36.15" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:00.540Z
+Latitude : 50 deg 7' 20.88" N
+Longitude : 53 deg 12' 36.13" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:01.540Z
+Latitude : 50 deg 7' 20.77" N
+Longitude : 53 deg 12' 36.09" E
+Speed : 7
+Date/Time : 2022:06:25 11:13:02.540Z
+Latitude : 50 deg 7' 20.58" N
+Longitude : 53 deg 12' 36.01" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:03.540Z
+Latitude : 50 deg 7' 20.34" N
+Longitude : 53 deg 12' 35.91" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:04.540Z
+Latitude : 50 deg 7' 20.07" N
+Longitude : 53 deg 12' 35.79" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:05.540Z
+Latitude : 50 deg 7' 19.79" N
+Longitude : 53 deg 12' 35.68" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:06.540Z
+Latitude : 50 deg 7' 19.53" N
+Longitude : 53 deg 12' 35.54" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:07.540Z
+Latitude : 50 deg 7' 19.23" N
+Longitude : 53 deg 12' 35.40" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:08.540Z
+Latitude : 50 deg 7' 18.90" N
+Longitude : 53 deg 12' 35.27" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:09.540Z
+Latitude : 50 deg 7' 18.60" N
+Longitude : 53 deg 12' 35.11" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:10.540Z
+Latitude : 50 deg 7' 18.30" N
+Longitude : 53 deg 12' 34.95" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:11.540Z
+Latitude : 50 deg 7' 18.01" N
+Longitude : 53 deg 12' 34.79" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:12.540Z
+Latitude : 50 deg 7' 17.73" N
+Longitude : 53 deg 12' 34.62" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:13.540Z
+Latitude : 50 deg 7' 17.44" N
+Longitude : 53 deg 12' 34.46" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:14.540Z
+Latitude : 50 deg 7' 17.14" N
+Longitude : 53 deg 12' 34.32" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:15.540Z
+Latitude : 50 deg 7' 16.82" N
+Longitude : 53 deg 12' 34.17" E
+Speed : 25
+Date/Time : 2022:06:25 11:13:16.540Z
+Latitude : 50 deg 7' 16.51" N
+Longitude : 53 deg 12' 34.06" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:17.540Z
+Latitude : 50 deg 7' 16.24" N
+Longitude : 53 deg 12' 33.93" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:18.540Z
+Latitude : 50 deg 7' 15.98" N
+Longitude : 53 deg 12' 33.80" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:19.540Z
+Latitude : 50 deg 7' 15.71" N
+Longitude : 53 deg 12' 33.65" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:20.540Z
+Latitude : 50 deg 7' 15.41" N
+Longitude : 53 deg 12' 33.53" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:22.840Z
+Latitude : 0 deg 0' 0.00" N
+Longitude : 0 deg 0' 0.00" E
+Speed : 0
+Date/Time : 2022:06:25 11:13:22.840Z
+Latitude : 0 deg 0' 0.00" N
+Longitude : 0 deg 0' 0.00" E
+Speed : 0
+Date/Time : 2022:06:25 11:13:22.840Z
+Latitude : 50 deg 7' 14.85" N
+Longitude : 53 deg 12' 33.29" E
+Speed : 21
+Date/Time : 2022:06:25 11:13:23.840Z
+Latitude : 50 deg 7' 14.60" N
+Longitude : 53 deg 12' 33.20" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:24.840Z
+Latitude : 50 deg 7' 14.40" N
+Longitude : 53 deg 12' 33.14" E
+Speed : 10
+Date/Time : 2022:06:25 11:13:25.840Z
+Latitude : 50 deg 7' 14.28" N
+Longitude : 53 deg 12' 33.09" E
+Speed : 7
+Date/Time : 2022:06:25 11:13:26.840Z
+Latitude : 50 deg 7' 14.21" N
+Longitude : 53 deg 12' 33.06" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:27.840Z
+Latitude : 50 deg 7' 14.16" N
+Longitude : 53 deg 12' 33.03" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:28.840Z
+Latitude : 50 deg 7' 14.09" N
+Longitude : 53 deg 12' 33.04" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:29.840Z
+Latitude : 50 deg 7' 13.99" N
+Longitude : 53 deg 12' 33.00" E
+Speed : 7
+Date/Time : 2022:06:25 11:13:30.840Z
+Latitude : 50 deg 7' 13.82" N
+Longitude : 53 deg 12' 32.93" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:31.840Z
+Latitude : 50 deg 7' 13.62" N
+Longitude : 53 deg 12' 32.80" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:32.840Z
+Latitude : 50 deg 7' 13.37" N
+Longitude : 53 deg 12' 32.68" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:33.840Z
+Latitude : 50 deg 7' 13.12" N
+Longitude : 53 deg 12' 32.57" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:34.840Z
+Latitude : 50 deg 7' 12.87" N
+Longitude : 53 deg 12' 32.45" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:35.840Z
+Latitude : 50 deg 7' 12.62" N
+Longitude : 53 deg 12' 32.34" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:36.840Z
+Latitude : 50 deg 7' 12.39" N
+Longitude : 53 deg 12' 32.23" E
+Speed : 18
+Date/Time : 2022:06:25 11:13:37.840Z
+Latitude : 50 deg 7' 12.15" N
+Longitude : 53 deg 12' 32.14" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:38.840Z
+Latitude : 50 deg 7' 11.94" N
+Longitude : 53 deg 12' 32.05" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:39.840Z
+Latitude : 50 deg 7' 11.73" N
+Longitude : 53 deg 12' 31.96" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:40.840Z
+Latitude : 50 deg 7' 11.53" N
+Longitude : 53 deg 12' 31.88" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:41.840Z
+Latitude : 50 deg 7' 11.34" N
+Longitude : 53 deg 12' 31.80" E
+Speed : 14
+Date/Time : 2022:06:25 11:13:42.840Z
+Latitude : 50 deg 7' 11.16" N
+Longitude : 53 deg 12' 31.73" E
+Speed : 10
+Date/Time : 2022:06:25 11:13:43.840Z
+Latitude : 50 deg 7' 10.99" N
+Longitude : 53 deg 12' 31.66" E
+Speed : 10
+Date/Time : 2022:06:25 11:13:44.840Z
+Latitude : 50 deg 7' 10.84" N
+Longitude : 53 deg 12' 31.62" E
+Speed : 10
+Date/Time : 2022:06:25 11:13:45.840Z
+Latitude : 50 deg 7' 10.70" N
+Longitude : 53 deg 12' 31.58" E
+Speed : 7
+Date/Time : 2022:06:25 11:13:46.840Z
+Latitude : 50 deg 7' 10.58" N
+Longitude : 53 deg 12' 31.56" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:47.840Z
+Latitude : 50 deg 7' 10.48" N
+Longitude : 53 deg 12' 31.55" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:48.840Z
+Latitude : 50 deg 7' 10.39" N
+Longitude : 53 deg 12' 31.53" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:49.840Z
+Latitude : 50 deg 7' 10.32" N
+Longitude : 53 deg 12' 31.52" E
+Speed : 3
+Date/Time : 2022:06:25 11:13:50.000Z
+Latitude : 0 deg 0' 0.00" N
+Longitude : 0 deg 0' 0.00" E
+Speed : 0

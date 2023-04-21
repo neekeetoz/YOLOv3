@@ -32,7 +32,7 @@
             "console": "integratedTerminal",
             "args": [
                 "--input",
-                "road_signs_test.mp4"
+                "samara2.MOV"
             ]
         }
     ]

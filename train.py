@@ -14,10 +14,10 @@ from yolo3.utils import get_random_data
 
 
 def _main():
-    annotation_path = 'model_data/signs_annotations.txt'
+    annotation_path = 'input/annotations_720.txt'
     log_dir = 'logs/'
     classes_path = 'input/signs_classes.txt'
-    anchors_path = 'model_data/signs_anchors.txt'
+    anchors_path = 'model_data/yolo_anchors_720p.txt'
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
@@ -27,10 +27,10 @@ def _main():
     is_tiny_version = len(anchors)==6 # default setting
     if is_tiny_version:
         model = create_tiny_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/signs_weights.h5')
+            freeze_body=2, weights_path='model_data/signs_tiny_weights.h5')
     else:
         model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/signs_weights.h5') # make sure you know what you freeze
+            freeze_body=2, weights_path='model_data/signs_yolo_weights.h5') # make sure you know what you freeze
 
     logging = TensorBoard(log_dir=log_dir)
     log_dir_1 = 'logs/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
@@ -64,7 +64,7 @@ def _main():
                 epochs=50,
                 initial_epoch=0,
                 callbacks=[logging, checkpoint])
-        model.save_weights(log_dir + 'trained_weights_stage_1.h5')
+        model.save_weights(log_dir + 'trained_tiny_weights_720p_stage_1.h5')
 
     # Unfreeze and continue training, to fine-tune.
     # Train longer if the result is not good.
@@ -83,7 +83,7 @@ def _main():
             epochs=100,
             initial_epoch=50,
             callbacks=[logging, checkpoint, reduce_lr, early_stopping])
-        model.save_weights(log_dir + 'trained_weights_final.h5')
+        model.save_weights(log_dir + 'trained_tiny_weights_720p_final.h5')
 
     # Further training if needed.
 
